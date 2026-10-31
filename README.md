@@ -2,7 +2,7 @@
 
 Original B.Tech research implementation governed by [PROJ_2.pdf](docs/PROJ_2.pdf). No previous-semester source, models, generated data or results are used.
 
-**Current increment:** backend engine and research interfaces. The dashboard, extension and human study are later milestones. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for verified work and limitations. No live-model or multilingual-quality result is claimed without real inference and independent evaluation.
+**Current increment:** the FastAPI research engine and a responsive React research dashboard connected to its real persisted traces. The YouTube extension and human study remain future milestones. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and [dashboard verification evidence](docs/verification/dashboard-2026-10-31/REPORT.md) for actual results, including a real selected English response and a rate-limited Hindi follow-up. These are controlled test inputs, not a human efficacy study.
 
 The engine generates strategy-specific candidates, simulates each candidate's possible reaction, separately assesses safety/quality, applies explicit ranking/gates, and either refines within a bound, recommends a response, or abstains. Each stage is stored. Simulations are **uncalibrated model estimates**, not observed behavior. Recommendations never become real conversation turns unless a human explicitly records an actually posted reply.
 
@@ -15,6 +15,51 @@ The engine generates strategy-specific candidates, simulates each candidate's po
 - [Original proposal](docs/PROJ_2.pdf) and [constraints](AGENTS.md)
 
 ## Local startup
+
+### Windows / PowerShell: backend and dashboard
+
+Install **Python 3.12** and **Node.js 22.12+** (Node 24 is also supported). Start in the repository root on `feat/greenfield-research-engine`. The copy/token steps below are for first setup; preserve any existing configured `.env` files. No global Python activation or PowerShell execution-policy change is needed:
+
+```powershell
+New-Item -ItemType Directory -Force work | Out-Null
+py -3.12 -m venv work\.venv
+.\work\.venv\Scripts\python.exe -m pip install -r backend\requirements-dev.lock
+.\work\.venv\Scripts\python.exe -m pip install --no-deps -e .\backend
+Copy-Item .env.example .env
+Copy-Item dashboard\.env.example dashboard\.env
+
+# Generate one server-side research token and put it in BOTH ignored server files.
+$researchToken = & .\work\.venv\Scripts\python.exe -c "import secrets; print(secrets.token_urlsafe(32))"
+(Get-Content .env) -replace '^RESEARCH_API_KEY=.*$', "RESEARCH_API_KEY=$researchToken" | Set-Content -Encoding utf8 .env
+(Get-Content dashboard\.env) -replace '^RESEARCH_API_KEY=.*$', "RESEARCH_API_KEY=$researchToken" | Set-Content -Encoding utf8 dashboard\.env
+$researchToken = $null
+notepad .env
+```
+
+In the root `.env`, set `LLM_API_KEY`, `LLM_BASE_URL` and `LLM_MODEL` to your provider configuration. For Groq's OpenAI-compatible endpoint the base URL is `https://api.groq.com/openai/v1`; choose an available multilingual JSON-capable model. `openai/gpt-oss-120b` was used in the recorded checks. Model availability and quota depend on the provider account. Keep the templates secret-free; edit only ignored `.env` files. Preserve the default `DATABASE_URL=sqlite:///./work/research.db` for local persistence. No provider key belongs in `dashboard/.env`.
+
+In **terminal 1**, from the repository root:
+
+```powershell
+.\work\.venv\Scripts\python.exe -m uvicorn counterspeech.api:app_factory --factory --env-file .env --host 127.0.0.1 --port 8000
+```
+
+In **terminal 2**, from the repository root:
+
+```powershell
+Set-Location dashboard
+npm ci
+npm run build
+npm start
+```
+
+Open **http://127.0.0.1:5173**. `npm start` serves the verified production build. For frontend development, stop it and run `npm run dev` on the same port. After source changes rebuild before using `npm start`. Both commands run the Node credential proxy; plain `vite`, `vite preview` or opening `dist/index.html` cannot provide the authenticated API connection.
+
+The Node server reads `dashboard/.env` once at startup and forwards only allowed API routes to `DASHBOARD_BACKEND_URL` (default `http://127.0.0.1:8000`). The research token must match the backend token. Credentials never enter React, browser storage or browser API headers. Vite `.env` loading is disabled; do not introduce `VITE_` secrets. Existing environment variables take precedence over `.env` in both servers.
+
+The dashboard is deliberately a **loopback-only internal application**. It accepts loopback backend URLs and enforces Host, Origin and JSON-write checks. Deployment with remote users needs an actual identity/session system and HTTPS; do not expose this local credential proxy publicly. If changing backend `MAX_RUN_SECONDS`, keep server `DASHBOARD_TIMEOUT_MS` longer (default 660000 ms for a 600-second run).
+
+### macOS / Linux backend
 
 Python 3.12 recommended. Run from the repository root:
 
@@ -36,6 +81,19 @@ uvicorn counterspeech.api:app_factory --factory --env-file .env --host 127.0.0.1
 Open `http://127.0.0.1:8000/docs`. Supply the research token in the protected endpoint's `x-api-key` input. Without model configuration, health works and run creation returns **503 `inference_not_configured`**. There is no production fixture generator or canned fallback. Without a configured research token, all research routes are closed.
 
 Local startup uses SQLite and creates development tables. For migrations instead, load the server's `DATABASE_URL`, run `alembic -c backend/alembic.ini upgrade head`, and set `INITIALIZE_DATABASE=false`. Use migrations for existing deployment schemas.
+
+For the dashboard, copy `dashboard/.env.example` to `dashboard/.env`, set the matching server-side research token, then `cd dashboard && npm ci && npm run build && npm start` in a second terminal.
+
+## Research dashboard workflow
+
+- Enter the actual comment, choose English, Hindi, Malayalam, Hinglish or Minglish (or automatic detection), optionally require native/romanized script, and submit. Candidate count and bounded refinement are sent to the existing API. Experiment settings also expose full, no-history, no-simulation and single-shot modes without changing their contracts.
+- The dashboard discovers the active run through its conversation and polls the stored trace while the existing synchronous POST is processing. It displays recorded events, not an estimated completion percentage. Avoid repeating a submission after a dropped connection; first inspect persisted runs.
+- Inspect the input, IDs, context actually supplied, detected language, hostility/change, every candidate and its simulated future reply, uncalibrated reaction distribution, separate model quality assessment, score, recorded eligibility reasons, thresholds and ranking. Refinement appears only when actually logged. Abstention has no selected response. A failed trace preserves partial evidence without inventing assessment or scoring.
+- **Conversation** displays researcher-submitted observations separately from simulated future replies, with model-assessed hostility by input. Use an existing conversation for a next run, or enter its UUID in settings. Record an actually posted reply through the explicit observation form; the generated recommendation is never automatically inserted. Submitted provenance does not independently prove human origin. Controlled research messages must be described honestly in study evidence.
+- Browse the latest 30/100 persisted runs, or open any known run ID. Stable links are `http://127.0.0.1:5173/runs/<run_id>`; `/?run_id=<run_id>` also works. The future extension can link directly to the same backend UUID. Download exports the exact retrieved JSON.
+- **Execution log** exposes structured events and genuinely reported per-call metadata. Unknown usage/cost stays unavailable; partial token totals are labeled and failed calls may have unreported usage. No hidden model reasoning, calibrated probability, actual future human behavior or independent human quality score is claimed.
+
+An empty database shows an empty library. Checked-in verification JSON is research evidence and is **not** automatically imported, seeded, replayed as live output, or used as frontend mock data. Earlier local SQLite files are not included in Git; point the backend at your existing database to browse it.
 
 ## API workflow
 
@@ -72,7 +130,39 @@ python -m pip check
 
 PostgreSQL integration is skipped unless `TEST_DATABASE_URL` points to a designated **test database** with schema-creation privileges. It creates/drops only an isolated random `test_<uuid>` schema. CI provisions a PostgreSQL test service; remote CI has not run until the branch is pushed.
 
-Fixture providers exist only under `backend/tests/` and are labeled `deterministic_test_fixture`. Adapter tests use mocked HTTP transport. Neither proves live inference. Locks capture tested dependency versions; rerun checks after updating them. Current Starlette emits a TestClient HTTPX deprecation warning; passing results remain valid.
+Fixture providers are confined to `backend/tests/` and `dashboard/tests/` and are labeled `deterministic_test_fixture`. Adapter tests use mocked HTTP transport. Neither proves live inference. Locks capture tested dependency versions; rerun checks after updating them. Current Starlette emits a TestClient HTTPX deprecation warning; passing results remain valid.
+
+Dashboard checks on Windows (from the repository root):
+
+```powershell
+.\work\.venv\Scripts\python.exe -m pytest backend\tests -q
+$env:PYTHON = (Resolve-Path work\.venv\Scripts\python.exe).Path
+Set-Location dashboard
+npm ci
+npm run build
+npm run format:check
+npm test
+npx playwright install chromium
+npm run test:e2e
+```
+
+`npm test` has mocked UI/projection tests and HTTP proxy tests with a mocked upstream. `test:e2e` uses a real Chromium browser, Node proxy, FastAPI service and SQLite, with an explicitly test-only deterministic LLM provider. It verifies refinement/selection, abstention, partial failure, processing events, observed/simulated separation, language switching, experiment modes, exact retrieval and mobile layout. It is **not a real-model evaluation**. Browser artifacts and test databases stay under ignored `work/`. An installed browser can be selected with `$env:CHROMIUM_PATH="C:\path\to\chrome.exe"`.
+
+The separate optional **real-model** browser test costs provider quota. It requires provider variables in the **terminal's server environment** (the live harness does not read root `.env`), creates an ephemeral server-only research token, uses `work/dashboard-live/research.db`, and submits two assistant-authored controlled English→Hindi messages. Do not run it in ordinary CI:
+
+```powershell
+# In the dashboard directory; configure these in this terminal without committing values.
+$env:LLM_BASE_URL = "https://api.groq.com/openai/v1"
+$env:LLM_MODEL = "openai/gpt-oss-120b"
+$providerSecret = Read-Host "Provider API key" -AsSecureString
+$env:LLM_API_KEY = [System.Net.NetworkCredential]::new("", $providerSecret).Password
+Remove-Variable providerSecret
+$env:PYTHON = (Resolve-Path ..\work\.venv\Scripts\python.exe).Path
+$env:RUN_REAL_MODEL_TESTS = "1"
+npm run test:live
+```
+
+It preserves real API evidence, including failures, under `docs/verification/dashboard-2026-10-31/` for review; rerunning replaces those evidence files and should be an intentional new experiment. A failed live suite remains a failure, never converted to fabricated success. The recorded second submission was rate-limited, so no Hindi completion or live refinement is claimed for this milestone. `LIVE_INSPECT_ONLY=1` selects a GET-only inspection of those IDs after an API restart and makes no new inference calls; it requires their original local live-test database.
 
 ## PostgreSQL + Docker Compose
 
@@ -89,4 +179,4 @@ Managed proxy builds can use `docker build --secret id=proxy_ca,src=/etc/ssl/cer
 
 ## Continue
 
-Read `AGENTS.md`, `PROJECT_SPEC.md`, `PROJECT_STATUS.md` and the proposal before changes. Next: configure approved live inference and validate all language variants, then build the separate dashboard and MV3 extension using these real run IDs. Never present fixture output as live inference. Preserve the original documents and work on a feature branch.
+Read `AGENTS.md`, `PROJECT_SPEC.md`, `PROJECT_STATUS.md` and the proposal before changes. Next: integrate the YouTube-first MV3 extension using stable run links, address the existing Hinglish script-validation limitation, and collect independent multilingual/human evaluation. Provider capacity currently blocks the second new live test. Never present fixture output as live inference. Preserve the original documents and work on the feature branch; keep PR #1 open and unmerged.

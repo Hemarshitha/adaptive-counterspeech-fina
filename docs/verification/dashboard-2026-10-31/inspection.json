@@ -1,0 +1,18 @@
+{
+  "inspected": [
+    {
+      "run_id": "8858a371-4542-47f3-81d7-0477858c762f",
+      "status": "completed",
+      "retrieved_after_restart_equal": true,
+      "browser_verified": true
+    },
+    {
+      "run_id": "e9a7f10a-7446-4523-9bc4-b690c9ff1cba",
+      "status": "failed",
+      "retrieved_after_restart_equal": true,
+      "browser_verified": true
+    }
+  ],
+  "new_inference_requests": 0,
+  "method": "GET-only browser inspection of persisted live records after API restart"
+}

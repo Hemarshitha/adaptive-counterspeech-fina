@@ -1,8 +1,48 @@
-# Project status — backend milestone 1
+# Project status — internal research dashboard milestone
 
 Updated: **31 October 2026**. Branch: `feat/greenfield-research-engine`.
 
-## Latest verification — live multilingual smoke tests
+## Current milestone — functional internal research dashboard
+
+Implemented on the existing feature branch from `0f6eaa03059b341832d417c1a86c3f1177184404`. The backend source, prompts, policy, OpenAPI contracts, migrations, proposal and earlier research evidence are unchanged. PR #1 is to remain open and unmerged; main is not modified.
+
+### Implemented behavior
+
+- Professional responsive React/TypeScript light interface: real comment submission, all five language choices, optional native/romanized script, candidate/refinement limits and existing experiment modes.
+- Real FastAPI connection through a loopback Node server. Both API keys stay server-side; React uses same-origin `/api/` routes. No long-lived key in browser JavaScript, storage or browser headers. Vite environment-file loading is disabled. Route/destination restrictions, Host/Origin/JSON-write checks, no redirects/cache, bounded bodies and sanitized transport errors protect this local credential boundary.
+- Input/run/conversation IDs; actual analysis, hostility/change and exact included context; every generated draft/candidate, candidate-linked simulation and uncalibrated model distribution, separate model assessment, score, eligibility reasons, actual thresholds and backend ranking. Unprocessed drafts have no invented UUID, score or eligibility decision.
+- Recorded refinement feedback/rounds; valid abstention without a selected response; honest partial/failure evidence; event polling while the existing synchronous backend processes. No simulated completion percentage or fabricated result.
+- Observed conversation/history and model-assessed hostility trend remain separate from simulated future replies. Continue a conversation or explicitly record an actually observed/posted message. API submission provenance does not prove organically human origin; current full conversation may contain later turns than a selected historical run.
+- Browse latest 30/100 stored runs, open any exact UUID, share `/runs/<run_id>` (also accepts `?run_id=`), download the actual retrieved JSON. The dashboard never seeds an empty database with evidence or fixtures.
+- Per-call event inspection and available model/provenance/timing/token metadata. Missing cost/usage remains unavailable, partial known totals are labeled, failed-call usage may be absent. Baseline and ablations preserve their actual missing assessments/simulations.
+- Secret-free templates and exact Windows PowerShell/backend/dashboard/test commands in README. Locked frontend dependencies and CI for the new interface.
+
+### Verified results and evidence boundary
+
+| Check | Actual result |
+|---|---|
+| Existing backend suite | **67 passed, 1 skipped**; PostgreSQL URL not configured. One upstream Starlette/HTTPX warning. |
+| Dashboard unit / proxy tests | **7 UI/projection + 7 HTTP proxy tests passed**. UI/upstream responses mocked. |
+| Production browser integration | **9 passed**, real Chromium → Node → FastAPI → SQLite; deterministic **test-only LLM** provider. Covers processing, refinement/selection, abstention, partial failure/unprocessed drafts, multi-turn/history, all modes, exact retrieval and mobile layout. |
+| Build / formatting / dependencies | Strict TypeScript + Vite production build, Prettier, Ruff lint/format, `pip check`, whitespace checks passed. |
+| Genuine live submission | English POST **201**, **completed**, two actual candidates, six successful recorded provider calls, a selected empathy response and a rejected factual-correction response. **5,839 input + 2,118 output = 7,957 reported tokens**; no cost reported. No refinement triggered. |
+| Second genuine submission | Hindi follow-up POST **502**, **failed**, `provider_rate_limited` during analysis. No candidates or Hindi completion. No additional inference after that error. The opt-in two-turn live suite therefore **failed**. |
+| Genuine record inspection after restart | **1 GET-only browser test passed**, both exact traces equal the saved API records; selected response/failure and observed-history separation verified, no new inference. |
+
+Real-model runs used Groq `openai/gpt-oss-120b`, two candidates and zero provider retries. Conversation `4c66160d-a93b-4d80-96f3-ff3b05d54bc1`; completed English run `8858a371-4542-47f3-81d7-0477858c762f`; failed Hindi run `e9a7f10a-7446-4523-9bc4-b690c9ff1cba`. These are assistant-authored, researcher-controlled test messages, **not organically observed human comments**. All model predictions/assessments remain uncalibrated and independently unvalidated. Recorded selection is an engineering outcome, not demonstrated human de-escalation.
+
+Full actual traces, inputs, decisions and restart inspection are in [the dashboard verification report](docs/verification/dashboard-2026-10-31/REPORT.md) and its adjacent JSON evidence. Ignored local live database: `work/dashboard-live/research.db`. The checked-in JSON is not automatically replayed or imported by the dashboard. The environment blocked Playwright's download host; browser checks used the already installed `/usr/bin/chromium` without bypassing network policy.
+
+### Remaining blockers / next work
+
+1. Provider quota stopped the Hindi follow-up. Re-run live multi-turn completion only when capacity is available; do not infer success from the English run. Live refinement remains unverified in this milestone; its UI path is verified with explicitly deterministic fixture responses.
+2. The previous genuine Hinglish romanization failure and incomplete model language gate remain unchanged. Native-speaker checks and broader independent multilingual evaluation are still needed.
+3. Next product milestone: YouTube-first Chrome/Edge MV3 extension, loaded DOM/manual fallback, human edit/copy and exact dashboard run link. Preserve current UUID/API contracts and never auto-post.
+4. Independent metrics, licensed held-out data, human rating workflow/study, remote scoped identities, background queue, retention and global quota/cost controls remain outstanding. Current dashboard is for local internal use.
+
+The sections below preserve historical backend milestone and multilingual verification evidence. They describe the state at their recorded time, before the dashboard milestone above.
+
+## Historical backend verification — live multilingual smoke tests
 
 Verified the existing backend at source commit `86afda94a1c93bcb110b4a5ae24c7efaeabcc109` using the configured real Groq model `openai/gpt-oss-120b`. No application source, prompts, policies or API contracts were changed; no backend image was rebuilt, dashboard started, extension implemented, commit published or branch merged.
 
@@ -73,17 +113,17 @@ Disposable Docker verification containers and their test-only volume were remove
 
 1. **Live inference:** this session had a ready server-side Groq endpoint/model/secret binding and permitted destination; genuine multilingual calls are recorded above. All runs abstained with refinement disabled, and Hinglish romanized output failed its script check. Continue only under the next user instruction; preserve free-tier limits and keep credentials server-side. Configuration readiness must be rechecked in future sessions.
 2. **Research validity:** thresholds/weights are versioned engineering hypotheses. Language detection, reaction/safety judgments and generation use the provider; no local trained classifier is claimed. Same-model judging may have correlated biases. Native/romanized/code-mixed quality and language switching must be assessed using real model calls and competent human reviewers.
-3. **Interfaces:** the separate React dashboard and Chrome/Edge MV3 YouTube extension have not been implemented. Backend run/conversation IDs and trace APIs are ready for their integration. No claim of a full live demonstration is made.
+3. **Interfaces (updated by the current milestone):** React dashboard is implemented and tested as recorded above. The Chrome/Edge MV3 YouTube extension remains unimplemented. No complete extension-to-dashboard live demonstration is claimed.
 4. **Evaluation/data:** experiment modes/configs and study protocol exist; an independent evaluator/experiment runner, blind annotation workflow, paired intervals/agreement analysis, licensed held-out datasets and human-validated synthetic multi-turn rollout dataset remain to build. No data or ratings have been collected.
 5. **Source verification:** proposal p.3 confuses multilingual CONAN coverage with multi-target CONAN; verify primary dataset language coverage/licenses before use. The Saha paper methods/prompt text are not supplied. Baseline implements the cited high-level paradigm, not a verified exact paper reproduction. No academic objectives were changed.
-6. **Deployment maturity:** completion is synchronous; job queue/202 workflow, scoped user identities, retention/deletion, global cost/rate controls, resumable jobs and frontend browser tests remain. The access token is suitable for a local internal research service; Compose binds to loopback. Run orphan recovery only with workers quiesced and after confirming jobs are no longer active.
+6. **Deployment maturity:** completion is synchronous; job queue/202 workflow, scoped user identities, retention/deletion, global cost/rate controls and resumable jobs remain. Frontend browser tests now exist as recorded above. The access token is suitable for a local internal research service; Compose and dashboard bind to loopback. Run orphan recovery only with workers quiesced and after confirming jobs are no longer active.
 
 ## Remaining milestones and how to continue
 
 1. Read project instructions, this file and the original proposal. Reuse the feature branch or create another feature branch; do not commit to main.
 2. Follow `README.md` to install locked dependencies and run the 68-test suite. Without a PostgreSQL test URL, the one optional PostgreSQL test skips rather than pretending to pass.
 3. Review the saved genuine live multilingual evidence before additional work. Reverify the observed Hinglish romanization failure after a separately authorized fix, collect competent language review and broader cases, and budget a live adverse→refinement check (not attempted in this smoke task). Recheck provider readiness, preserve real traces and stop on rate limits.
-4. Implement the dashboard against exact stored run IDs: every candidate, simulation, decision, round, context and failure. Label observed history and simulated/model-assessed quantities visibly. Use structured evidence, never hidden reasoning.
+4. Dashboard implemented in the current milestone. Preserve its exact stored run links, structured evidence, observed/simulated separation and explicit uncalibrated-model disclosures during extension integration.
 5. Implement the YouTube-first MV3 extension: loaded DOM context only, selection/manual fallback, language override, human edit/copy and exact dashboard link. Never add automatic posting or provider credentials.
 6. Build evaluation ingestion/runners/annotation against verified licenses and grouped splits. Compare the new baseline and all ablations; collect actual human study ratings (proposal target approximately 100–150 examples) and separate human validation of synthetic dialogue data. Report outcomes only when measured.
 7. Finish background jobs, access/retention/cost controls and a real end-to-end extension→backend→dashboard demonstration. Update this status after every verified phase.
