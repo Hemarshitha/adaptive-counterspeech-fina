@@ -29,6 +29,7 @@ This update keeps the real analysis → generation → candidate-specific simula
 
    ```dotenv
    PROVIDER_GROQ_PACING=true
+   PROVIDER_RETRIES=2
    PROVIDER_CALL_DEADLINE_SECONDS=300
    MAX_RUN_SECONDS=1800
    ```
