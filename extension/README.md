@@ -14,7 +14,7 @@ Requirements: Windows 10/11, current Chrome (116+), Python 3.12 and Node.js 22.1
    .\work\.venv\Scripts\python.exe extension\package.py
    ```
 
-   The unpacked directory is `extension\dist\unpacked` and ZIP is `extension\dist\counterpoint-extension.zip`. These generated artifacts are ignored. The ZIP has `manifest.json` at its root: extract it into a permanent folder before loading. Keep that folder after installation. Building the extension itself needs no npm dependencies.
+   The unpacked directory is `extension\dist\unpacked` and ZIP is `extension\dist\counterpoint-extension.zip`. A verified prebuilt package is also available from the [CI artifact](https://github.com/Hemarshitha/adaptive-counterspeech-fina/actions/runs/41223061466/artifacts/13050891884): extract the downloaded artifact first, then extract its inner extension ZIP. These generated artifacts are ignored. The ZIP has `manifest.json` at its root: extract it into a permanent folder before loading. Keep that folder after installation. Building the extension itself needs no npm dependencies.
 3. Open **chrome://extensions**. Enable **Developer Mode** (top right). Click **Load unpacked** and select the **`extension\dist\unpacked` folder containing `manifest.json`**. Do not select the repository root, `extension`, or the ZIP. Pin Counterpoint using Chrome's puzzle-piece Extensions menu. Check that its ID is `igplhknffgcbdgeobbppamkgnbjppkoi`; the checked-in public manifest key stabilizes this ID, and is not a secret.
 4. In `dashboard\.env`, set the exact ID shown by Chrome:
 
