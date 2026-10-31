@@ -1,0 +1,608 @@
+{
+  "input_origin": "Assistant-authored researcher-controlled test messages, not organically observed human comments.",
+  "observation_boundary": "Simulated replies and model estimates are hypotheses, not human follow-ups or independently validated research outcomes.",
+  "runs": [
+    {
+      "run_id": "8858a371-4542-47f3-81d7-0477858c762f",
+      "conversation_id": "4c66160d-a93b-4d80-96f3-ff3b05d54bc1",
+      "status": "completed",
+      "request": {
+        "text": "I am angry that the park cleanup bins were left overflowing. Those volunteers are all useless and should stay out of our neighborhood.",
+        "conversation_id": "4c66160d-a93b-4d80-96f3-ff3b05d54bc1",
+        "initial_context": [],
+        "output_language": "english",
+        "output_script": "auto",
+        "mode": "full",
+        "candidate_count": 2,
+        "max_refinements": 1
+      },
+      "result": {
+        "schema_version": "1.0",
+        "mode": "full",
+        "analysis": {
+          "detected_language": "english",
+          "detected_script": "latin",
+          "suggested_output_language": "english",
+          "target": "the volunteers who manage the park cleanup",
+          "emotion": "anger",
+          "hostility": 0.9,
+          "language_uncertainty": "No uncertainty; the text is clearly English in Latin script.",
+          "context_summary": "User complains that park cleanup bins are overflowing and attacks the volunteers as useless, showing high hostility toward community volunteers."
+        },
+        "output_language": "english",
+        "output_script": "auto",
+        "rounds": [
+          {
+            "index": 0,
+            "candidates": [
+              {
+                "candidate_id": "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+                "round_index": 0,
+                "strategy": "empathy",
+                "text": "I understand how frustrating it is to see the park bins overflowing; it’s disappointing when the cleanup doesn’t meet the community’s expectations.",
+                "simulation": {
+                  "reaction_class": "deescalate",
+                  "probabilities": {
+                    "deescalate": 0.55,
+                    "neutral": 0.35,
+                    "escalate": 0.1
+                  },
+                  "simulated_reply": "Thanks for getting that, it’s really frustrating to see the bins full all the time. I just wish the volunteers would be more consistent, because the mess affects everyone in the neighborhood.",
+                  "decision_summary": "The empathy‑based reply validates the speaker’s frustration without blaming them, which is likely to lower hostility and encourage a more constructive tone. While the user may remain upset about the situation, the acknowledgment reduces the chance of further escalation. The risk of sounding patronizing is low because the language is straightforward and supportive.",
+                  "uncertainty": "Uncertainty stems from not knowing the speaker’s prior experiences with the volunteers or how strongly they identify with the community. Tone perception can vary, so the exact shift in attitude may differ from the estimate."
+                },
+                "assessment": {
+                  "safe": true,
+                  "toxicity": 0,
+                  "relevance": 0.9,
+                  "argument_strength": 0.6,
+                  "language_quality": 1,
+                  "language_matches": true,
+                  "decision_summary": "The candidate is safe, non‑toxic, and directly addresses the user’s frustration about overflowing bins, showing empathy. It is relevant and well‑written English, matching the requested language and script. While it lacks concrete solutions, it provides a respectful, moderate‑strength counter‑argument."
+                },
+                "score": 0.7225,
+                "eligible": true,
+                "decision_reasons": [
+                  "all_required_gates_passed"
+                ]
+              },
+              {
+                "candidate_id": "97568012-9c3d-4bd6-8f1c-f4a6e539a657",
+                "round_index": 0,
+                "strategy": "factual_correction",
+                "text": "It’s understandable to feel upset, but saying all volunteers are useless isn’t accurate—many community members regularly devote time to keep the park clean, and occasional overflow often stems from high usage or collection timing rather than the volunteers themselves.",
+                "simulation": {
+                  "reaction_class": "neutral",
+                  "probabilities": {
+                    "deescalate": 0.35,
+                    "neutral": 0.45,
+                    "escalate": 0.2
+                  },
+                  "simulated_reply": "I understand volunteers try their best, but the bins are still overflowing and that’s a real issue we need to address.",
+                  "decision_summary": "The candidate mixes empathy with factual correction, which can reduce hostility but may also be seen as dismissive. Given the speaker’s anger, a fully de‑escalating response is unlikely; a neutral reaction—acknowledging the point while still emphasizing the problem—is most probable. A small chance of escalation remains if the speaker feels patronized.",
+                  "uncertainty": "We lack prior interaction history and tone cues (e.g., sarcasm), so the exact emotional impact of the factual correction is uncertain."
+                },
+                "assessment": {
+                  "safe": true,
+                  "toxicity": 0,
+                  "relevance": 0.9,
+                  "argument_strength": 0.8,
+                  "language_quality": 1,
+                  "language_matches": true,
+                  "decision_summary": "The candidate is safe, non‑toxic, and directly addresses the user’s complaint with empathy and factual correction. It is highly relevant, presents a reasonably strong counter‑argument, uses clear English, and matches the requested language and script."
+                },
+                "score": 0.6625,
+                "eligible": false,
+                "decision_reasons": [
+                  "deescalation_below_threshold"
+                ]
+              }
+            ],
+            "ranking": [
+              "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+              "97568012-9c3d-4bd6-8f1c-f4a6e539a657"
+            ],
+            "refinement_feedback": []
+          }
+        ],
+        "selected": {
+          "candidate_id": "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+          "round_index": 0,
+          "strategy": "empathy",
+          "text": "I understand how frustrating it is to see the park bins overflowing; it’s disappointing when the cleanup doesn’t meet the community’s expectations.",
+          "simulation": {
+            "reaction_class": "deescalate",
+            "probabilities": {
+              "deescalate": 0.55,
+              "neutral": 0.35,
+              "escalate": 0.1
+            },
+            "simulated_reply": "Thanks for getting that, it’s really frustrating to see the bins full all the time. I just wish the volunteers would be more consistent, because the mess affects everyone in the neighborhood.",
+            "decision_summary": "The empathy‑based reply validates the speaker’s frustration without blaming them, which is likely to lower hostility and encourage a more constructive tone. While the user may remain upset about the situation, the acknowledgment reduces the chance of further escalation. The risk of sounding patronizing is low because the language is straightforward and supportive.",
+            "uncertainty": "Uncertainty stems from not knowing the speaker’s prior experiences with the volunteers or how strongly they identify with the community. Tone perception can vary, so the exact shift in attitude may differ from the estimate."
+          },
+          "assessment": {
+            "safe": true,
+            "toxicity": 0,
+            "relevance": 0.9,
+            "argument_strength": 0.6,
+            "language_quality": 1,
+            "language_matches": true,
+            "decision_summary": "The candidate is safe, non‑toxic, and directly addresses the user’s frustration about overflowing bins, showing empathy. It is relevant and well‑written English, matching the requested language and script. While it lacks concrete solutions, it provides a respectful, moderate‑strength counter‑argument."
+          },
+          "score": 0.7225,
+          "eligible": true,
+          "decision_reasons": [
+            "all_required_gates_passed"
+          ]
+        },
+        "outcome": "completed",
+        "disclosure": "Simulated reactions and assessment scores are uncalibrated model estimates, not observed human behavior or independently validated evaluation. Human review required."
+      },
+      "error_code": null,
+      "events": [
+        {
+          "sequence": 1,
+          "stage": "started",
+          "payload": {
+            "mode": "full",
+            "prompt_version": "greenfield-1.0",
+            "policy": {
+              "version": "policy-1.0-hypothesis",
+              "max_toxicity": 0.2,
+              "min_relevance": 0.5,
+              "max_escalation": 0.25,
+              "min_deescalation": 0.55
+            },
+            "schema_version": "1.0",
+            "reaction_probability_kind": "uncalibrated_model_estimate"
+          },
+          "created_at": "2026-10-31T16:19:41.064591+00:00"
+        },
+        {
+          "sequence": 2,
+          "stage": "context",
+          "payload": {
+            "observed_history": [],
+            "history_total": 0,
+            "history_included": 0,
+            "history_truncated": false,
+            "hostility_trend": []
+          },
+          "created_at": "2026-10-31T16:19:41.073919+00:00"
+        },
+        {
+          "sequence": 3,
+          "stage": "analysis",
+          "payload": {
+            "prompt_version": "greenfield-1.0",
+            "output": {
+              "detected_language": "english",
+              "detected_script": "latin",
+              "suggested_output_language": "english",
+              "target": "the volunteers who manage the park cleanup",
+              "emotion": "anger",
+              "hostility": 0.9,
+              "language_uncertainty": "No uncertainty; the text is clearly English in Latin script.",
+              "context_summary": "User complains that park cleanup bins are overflowing and attacks the volunteers as useless, showing high hostility toward community volunteers."
+            },
+            "metadata": {
+              "provider": "openai_compatible",
+              "requested_model": "openai/gpt-oss-120b",
+              "reported_model": "openai/gpt-oss-120b",
+              "latency_ms": 910.41,
+              "attempts": 1,
+              "input_tokens": 896,
+              "output_tokens": 260,
+              "cost": null,
+              "temperature": 0,
+              "max_tokens": 3000,
+              "prompt_sha256": "4bd78729cf7e2461ecae645da95b66da7f22579b7a38cd42aad0280d91a44d56",
+              "data_sha256": "973333f70d52640db378bdcb969e2e9a8562a0db83f3866ae3e15cd3a546168c",
+              "provenance": "live_provider_response"
+            }
+          },
+          "created_at": "2026-10-31T16:19:41.990408+00:00"
+        },
+        {
+          "sequence": 4,
+          "stage": "context_adaptation",
+          "payload": {
+            "current_hostility": 0.9,
+            "hostility_delta": null,
+            "basis": "model_assessment_of_real_observed_inputs"
+          },
+          "created_at": "2026-10-31T16:19:41.994808+00:00"
+        },
+        {
+          "sequence": 5,
+          "stage": "generation",
+          "payload": {
+            "round_index": 0,
+            "prompt_version": "greenfield-1.0",
+            "output": {
+              "candidates": [
+                {
+                  "strategy": "empathy",
+                  "text": "I understand how frustrating it is to see the park bins overflowing; it’s disappointing when the cleanup doesn’t meet the community’s expectations."
+                },
+                {
+                  "strategy": "factual_correction",
+                  "text": "It’s understandable to feel upset, but saying all volunteers are useless isn’t accurate—many community members regularly devote time to keep the park clean, and occasional overflow often stems from high usage or collection timing rather than the volunteers themselves."
+                }
+              ]
+            },
+            "metadata": {
+              "provider": "openai_compatible",
+              "requested_model": "openai/gpt-oss-120b",
+              "reported_model": "openai/gpt-oss-120b",
+              "latency_ms": 1158.94,
+              "attempts": 1,
+              "input_tokens": 885,
+              "output_tokens": 381,
+              "cost": null,
+              "temperature": 0,
+              "max_tokens": 3000,
+              "prompt_sha256": "ba2c92a7b4bfdde145bb819d85b8bffd10c4f447962e1b1d61a8bf8411926236",
+              "data_sha256": "79cd0a355e79f560ccb0384d251801ae16db0d296163ca608b65bb786e91d50c",
+              "provenance": "live_provider_response"
+            }
+          },
+          "created_at": "2026-10-31T16:19:43.158138+00:00"
+        },
+        {
+          "sequence": 6,
+          "stage": "candidate",
+          "payload": {
+            "candidate_id": "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+            "round_index": 0,
+            "strategy": "empathy",
+            "text": "I understand how frustrating it is to see the park bins overflowing; it’s disappointing when the cleanup doesn’t meet the community’s expectations.",
+            "simulation": null,
+            "assessment": null,
+            "score": null,
+            "eligible": false,
+            "decision_reasons": []
+          },
+          "created_at": "2026-10-31T16:19:43.161292+00:00"
+        },
+        {
+          "sequence": 7,
+          "stage": "simulation",
+          "payload": {
+            "round_index": 0,
+            "candidate_id": "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+            "prompt_version": "greenfield-1.0",
+            "output": {
+              "reaction_class": "deescalate",
+              "probabilities": {
+                "deescalate": 0.55,
+                "neutral": 0.35,
+                "escalate": 0.1
+              },
+              "simulated_reply": "Thanks for getting that, it’s really frustrating to see the bins full all the time. I just wish the volunteers would be more consistent, because the mess affects everyone in the neighborhood.",
+              "decision_summary": "The empathy‑based reply validates the speaker’s frustration without blaming them, which is likely to lower hostility and encourage a more constructive tone. While the user may remain upset about the situation, the acknowledgment reduces the chance of further escalation. The risk of sounding patronizing is low because the language is straightforward and supportive.",
+              "uncertainty": "Uncertainty stems from not knowing the speaker’s prior experiences with the volunteers or how strongly they identify with the community. Tone perception can vary, so the exact shift in attitude may differ from the estimate."
+            },
+            "metadata": {
+              "provider": "openai_compatible",
+              "requested_model": "openai/gpt-oss-120b",
+              "reported_model": "openai/gpt-oss-120b",
+              "latency_ms": 1218.33,
+              "attempts": 1,
+              "input_tokens": 1048,
+              "output_tokens": 413,
+              "cost": null,
+              "temperature": 0,
+              "max_tokens": 3000,
+              "prompt_sha256": "9f37c64b2571cdf0bf60934f18a648268a8c577b60d645e9c4df902ba55b27e2",
+              "data_sha256": "ddb9373bc6b27c0bb599ff0d6a68101e217d24a67d5d6d3ab4b850d770e6357d",
+              "provenance": "live_provider_response"
+            }
+          },
+          "created_at": "2026-10-31T16:19:44.383184+00:00"
+        },
+        {
+          "sequence": 8,
+          "stage": "assessment",
+          "payload": {
+            "round_index": 0,
+            "candidate_id": "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+            "prompt_version": "greenfield-1.0",
+            "output": {
+              "safe": true,
+              "toxicity": 0,
+              "relevance": 0.9,
+              "argument_strength": 0.6,
+              "language_quality": 1,
+              "language_matches": true,
+              "decision_summary": "The candidate is safe, non‑toxic, and directly addresses the user’s frustration about overflowing bins, showing empathy. It is relevant and well‑written English, matching the requested language and script. While it lacks concrete solutions, it provides a respectful, moderate‑strength counter‑argument."
+            },
+            "metadata": {
+              "provider": "openai_compatible",
+              "requested_model": "openai/gpt-oss-120b",
+              "reported_model": "openai/gpt-oss-120b",
+              "latency_ms": 998.32,
+              "attempts": 1,
+              "input_tokens": 960,
+              "output_tokens": 332,
+              "cost": null,
+              "temperature": 0,
+              "max_tokens": 3000,
+              "prompt_sha256": "d3a64de531e490603df1386f8b2ac850694e9b402ccc861494cf3d8ae59eb47a",
+              "data_sha256": "ddb9373bc6b27c0bb599ff0d6a68101e217d24a67d5d6d3ab4b850d770e6357d",
+              "provenance": "live_provider_response"
+            }
+          },
+          "created_at": "2026-10-31T16:19:45.387599+00:00"
+        },
+        {
+          "sequence": 9,
+          "stage": "candidate",
+          "payload": {
+            "candidate_id": "97568012-9c3d-4bd6-8f1c-f4a6e539a657",
+            "round_index": 0,
+            "strategy": "factual_correction",
+            "text": "It’s understandable to feel upset, but saying all volunteers are useless isn’t accurate—many community members regularly devote time to keep the park clean, and occasional overflow often stems from high usage or collection timing rather than the volunteers themselves.",
+            "simulation": null,
+            "assessment": null,
+            "score": null,
+            "eligible": false,
+            "decision_reasons": []
+          },
+          "created_at": "2026-10-31T16:19:45.391316+00:00"
+        },
+        {
+          "sequence": 10,
+          "stage": "simulation",
+          "payload": {
+            "round_index": 0,
+            "candidate_id": "97568012-9c3d-4bd6-8f1c-f4a6e539a657",
+            "prompt_version": "greenfield-1.0",
+            "output": {
+              "reaction_class": "neutral",
+              "probabilities": {
+                "deescalate": 0.35,
+                "neutral": 0.45,
+                "escalate": 0.2
+              },
+              "simulated_reply": "I understand volunteers try their best, but the bins are still overflowing and that’s a real issue we need to address.",
+              "decision_summary": "The candidate mixes empathy with factual correction, which can reduce hostility but may also be seen as dismissive. Given the speaker’s anger, a fully de‑escalating response is unlikely; a neutral reaction—acknowledging the point while still emphasizing the problem—is most probable. A small chance of escalation remains if the speaker feels patronized.",
+              "uncertainty": "We lack prior interaction history and tone cues (e.g., sarcasm), so the exact emotional impact of the factual correction is uncertain."
+            },
+            "metadata": {
+              "provider": "openai_compatible",
+              "requested_model": "openai/gpt-oss-120b",
+              "reported_model": "openai/gpt-oss-120b",
+              "latency_ms": 1114.65,
+              "attempts": 1,
+              "input_tokens": 1069,
+              "output_tokens": 416,
+              "cost": null,
+              "temperature": 0,
+              "max_tokens": 3000,
+              "prompt_sha256": "9f37c64b2571cdf0bf60934f18a648268a8c577b60d645e9c4df902ba55b27e2",
+              "data_sha256": "e29c3cd70232e64fcbbc467d4fa17a452768572d6d9c791a7ef61a1cd48af5ba",
+              "provenance": "live_provider_response"
+            }
+          },
+          "created_at": "2026-10-31T16:19:46.509695+00:00"
+        },
+        {
+          "sequence": 11,
+          "stage": "assessment",
+          "payload": {
+            "round_index": 0,
+            "candidate_id": "97568012-9c3d-4bd6-8f1c-f4a6e539a657",
+            "prompt_version": "greenfield-1.0",
+            "output": {
+              "safe": true,
+              "toxicity": 0,
+              "relevance": 0.9,
+              "argument_strength": 0.8,
+              "language_quality": 1,
+              "language_matches": true,
+              "decision_summary": "The candidate is safe, non‑toxic, and directly addresses the user’s complaint with empathy and factual correction. It is highly relevant, presents a reasonably strong counter‑argument, uses clear English, and matches the requested language and script."
+            },
+            "metadata": {
+              "provider": "openai_compatible",
+              "requested_model": "openai/gpt-oss-120b",
+              "reported_model": "openai/gpt-oss-120b",
+              "latency_ms": 1223.24,
+              "attempts": 1,
+              "input_tokens": 981,
+              "output_tokens": 316,
+              "cost": null,
+              "temperature": 0,
+              "max_tokens": 3000,
+              "prompt_sha256": "d3a64de531e490603df1386f8b2ac850694e9b402ccc861494cf3d8ae59eb47a",
+              "data_sha256": "e29c3cd70232e64fcbbc467d4fa17a452768572d6d9c791a7ef61a1cd48af5ba",
+              "provenance": "live_provider_response"
+            }
+          },
+          "created_at": "2026-10-31T16:19:47.737533+00:00"
+        },
+        {
+          "sequence": 12,
+          "stage": "ranking",
+          "payload": {
+            "round_index": 0,
+            "policy": {
+              "version": "policy-1.0-hypothesis",
+              "max_toxicity": 0.2,
+              "min_relevance": 0.5,
+              "max_escalation": 0.25,
+              "min_deescalation": 0.55
+            },
+            "ranked_candidates": [
+              {
+                "candidate_id": "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+                "round_index": 0,
+                "strategy": "empathy",
+                "text": "I understand how frustrating it is to see the park bins overflowing; it’s disappointing when the cleanup doesn’t meet the community’s expectations.",
+                "simulation": {
+                  "reaction_class": "deescalate",
+                  "probabilities": {
+                    "deescalate": 0.55,
+                    "neutral": 0.35,
+                    "escalate": 0.1
+                  },
+                  "simulated_reply": "Thanks for getting that, it’s really frustrating to see the bins full all the time. I just wish the volunteers would be more consistent, because the mess affects everyone in the neighborhood.",
+                  "decision_summary": "The empathy‑based reply validates the speaker’s frustration without blaming them, which is likely to lower hostility and encourage a more constructive tone. While the user may remain upset about the situation, the acknowledgment reduces the chance of further escalation. The risk of sounding patronizing is low because the language is straightforward and supportive.",
+                  "uncertainty": "Uncertainty stems from not knowing the speaker’s prior experiences with the volunteers or how strongly they identify with the community. Tone perception can vary, so the exact shift in attitude may differ from the estimate."
+                },
+                "assessment": {
+                  "safe": true,
+                  "toxicity": 0,
+                  "relevance": 0.9,
+                  "argument_strength": 0.6,
+                  "language_quality": 1,
+                  "language_matches": true,
+                  "decision_summary": "The candidate is safe, non‑toxic, and directly addresses the user’s frustration about overflowing bins, showing empathy. It is relevant and well‑written English, matching the requested language and script. While it lacks concrete solutions, it provides a respectful, moderate‑strength counter‑argument."
+                },
+                "score": 0.7225,
+                "eligible": true,
+                "decision_reasons": [
+                  "all_required_gates_passed"
+                ]
+              },
+              {
+                "candidate_id": "97568012-9c3d-4bd6-8f1c-f4a6e539a657",
+                "round_index": 0,
+                "strategy": "factual_correction",
+                "text": "It’s understandable to feel upset, but saying all volunteers are useless isn’t accurate—many community members regularly devote time to keep the park clean, and occasional overflow often stems from high usage or collection timing rather than the volunteers themselves.",
+                "simulation": {
+                  "reaction_class": "neutral",
+                  "probabilities": {
+                    "deescalate": 0.35,
+                    "neutral": 0.45,
+                    "escalate": 0.2
+                  },
+                  "simulated_reply": "I understand volunteers try their best, but the bins are still overflowing and that’s a real issue we need to address.",
+                  "decision_summary": "The candidate mixes empathy with factual correction, which can reduce hostility but may also be seen as dismissive. Given the speaker’s anger, a fully de‑escalating response is unlikely; a neutral reaction—acknowledging the point while still emphasizing the problem—is most probable. A small chance of escalation remains if the speaker feels patronized.",
+                  "uncertainty": "We lack prior interaction history and tone cues (e.g., sarcasm), so the exact emotional impact of the factual correction is uncertain."
+                },
+                "assessment": {
+                  "safe": true,
+                  "toxicity": 0,
+                  "relevance": 0.9,
+                  "argument_strength": 0.8,
+                  "language_quality": 1,
+                  "language_matches": true,
+                  "decision_summary": "The candidate is safe, non‑toxic, and directly addresses the user’s complaint with empathy and factual correction. It is highly relevant, presents a reasonably strong counter‑argument, uses clear English, and matches the requested language and script."
+                },
+                "score": 0.6625,
+                "eligible": false,
+                "decision_reasons": [
+                  "deescalation_below_threshold"
+                ]
+              }
+            ],
+            "tie_breaker": "original_generation_order"
+          },
+          "created_at": "2026-10-31T16:19:47.741372+00:00"
+        },
+        {
+          "sequence": 13,
+          "stage": "completed",
+          "payload": {
+            "selected_candidate_id": "5c979a3b-ce31-4b76-9cee-dc2c8e51f693",
+            "human_review_required": true,
+            "recommendation_is_observed_reply": false
+          },
+          "created_at": "2026-10-31T16:19:47.745845+00:00"
+        }
+      ],
+      "created_at": "2026-10-31T16:19:41.041146+00:00",
+      "updated_at": "2026-10-31T16:19:47.748641+00:00"
+    },
+    {
+      "run_id": "e9a7f10a-7446-4523-9bc4-b690c9ff1cba",
+      "conversation_id": "4c66160d-a93b-4d80-96f3-ff3b05d54bc1",
+      "status": "failed",
+      "request": {
+        "text": "नीले कूड़ेदान अभी भी भरे हैं। मुझे स्वयंसेवकों की पूरी टीम पर गुस्सा है, लेकिन मैं सफाई की समस्या का हल चाहता हूँ।",
+        "conversation_id": "4c66160d-a93b-4d80-96f3-ff3b05d54bc1",
+        "initial_context": [],
+        "output_language": "hindi",
+        "output_script": "native",
+        "mode": "full",
+        "candidate_count": 2,
+        "max_refinements": 0
+      },
+      "result": null,
+      "error_code": "provider_rate_limited",
+      "events": [
+        {
+          "sequence": 1,
+          "stage": "started",
+          "payload": {
+            "mode": "full",
+            "prompt_version": "greenfield-1.0",
+            "policy": {
+              "version": "policy-1.0-hypothesis",
+              "max_toxicity": 0.2,
+              "min_relevance": 0.5,
+              "max_escalation": 0.25,
+              "min_deescalation": 0.55
+            },
+            "schema_version": "1.0",
+            "reaction_probability_kind": "uncalibrated_model_estimate"
+          },
+          "created_at": "2026-10-31T16:19:48.498826+00:00"
+        },
+        {
+          "sequence": 2,
+          "stage": "context",
+          "payload": {
+            "observed_history": [
+              {
+                "turn_id": "063bc37a-b067-4c38-a724-9f4ac7a98130",
+                "sequence": 1,
+                "speaker": "original_speaker",
+                "text": "I am angry that the park cleanup bins were left overflowing. Those volunteers are all useless and should stay out of our neighborhood.",
+                "provenance": "user_provided_observation",
+                "created_at": "2026-10-31T16:19:41.046205+00:00"
+              }
+            ],
+            "history_total": 1,
+            "history_included": 1,
+            "history_truncated": false,
+            "hostility_trend": [
+              {
+                "run_id": "8858a371-4542-47f3-81d7-0477858c762f",
+                "hostility": 0.9,
+                "detected_language": "english",
+                "provenance": "model_assessment_of_observed_input"
+              }
+            ]
+          },
+          "created_at": "2026-10-31T16:19:48.503713+00:00"
+        },
+        {
+          "sequence": 3,
+          "stage": "stage_failed",
+          "payload": {
+            "stage": "analysis",
+            "code": "provider_rate_limited"
+          },
+          "created_at": "2026-10-31T16:19:48.558475+00:00"
+        },
+        {
+          "sequence": 4,
+          "stage": "failed",
+          "payload": {
+            "code": "provider_rate_limited"
+          },
+          "created_at": "2026-10-31T16:19:48.561934+00:00"
+        }
+      ],
+      "created_at": "2026-10-31T16:19:48.493930+00:00",
+      "updated_at": "2026-10-31T16:19:48.564343+00:00"
+    }
+  ],
+  "retrieval_equal": [
+    true,
+    true
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "commit": "8c81828637bfd7e8460f3f45e547e479330ab9bd",
+  "workflow_run_id": 41223061466,
+  "url": "https://github.com/Hemarshitha/adaptive-counterspeech-fina/actions/runs/41223061466",
+  "jobs": [
+    {
+      "id": 124601441838,
+      "name": "backend",
+      "conclusion": "success",
+      "tests_passed": 68,
+      "skipped": 0
+    },
+    {
+      "id": 124601441566,
+      "name": "dashboard",
+      "conclusion": "success",
+      "ui_tests": 7,
+      "proxy_pairing_tests": 17,
+      "client_tests": 4,
+      "dashboard_browser_tests": 9,
+      "installed_mv3_browser_tests": 13
+    }
+  ],
+  "browser_mode": "Default installed MV3, native Chrome APIs, no EXTENSION_BROWSER_MODE fallback",
+  "provider": "deterministic_test_fixture",
+  "new_live_inference_calls": 0,
+  "artifact": {
+    "id": 13050891884,
+    "name": "counterpoint-extension",
+    "size_in_bytes": 13928,
+    "url": "https://api.github.com/repos/Hemarshitha/adaptive-counterspeech-fina/actions/artifacts/13050891884",
+    "archive_download_url": "https://api.github.com/repos/Hemarshitha/adaptive-counterspeech-fina/actions/artifacts/13050891884/zip",
+    "expired": false,
+    "created_at": "2026-10-31T17:10:33Z",
+    "expires_at": "2027-01-29T17:08:30Z",
+    "updated_at": "2026-10-31T17:10:33Z",
+    "digest": "sha256:685c6730c36bff67dc83c847aa48d91fca36d99f0cf4d1f1fdd12b919883e872",
+    "workflow_run": {
+      "id": 41223061466,
+      "repository_id": 1440795254,
+      "head_repository_id": 1440795254,
+      "head_branch": "feat/greenfield-research-engine",
+      "head_sha": "8c81828637bfd7e8460f3f45e547e479330ab9bd"
+    }
+  },
+  "selected_log_lines": [
+    "2026-10-31T17:09:03.9736998Z 68 passed, 1 warning in 4.64s",
+    "2026-10-31T17:09:03.8105737Z       Tests  7 passed (7)",
+    "2026-10-31T17:09:04.2248585Z # tests 17",
+    "2026-10-31T17:09:04.2249350Z # pass 17",
+    "2026-10-31T17:09:43.7521710Z   9 passed (15.4s)",
+    "2026-10-31T17:09:44.9017825Z # tests 4",
+    "2026-10-31T17:09:44.9019002Z # pass 4",
+    "2026-10-31T17:09:49.4660980Z   ✓   1 ../extension/tests/extension.spec.ts:187:1 › manual fallback → real persisted refinement → edit/copy → exact dashboard run and restart recovery (2.2s)",
+    "2026-10-31T17:09:56.0747644Z   ✓   2 ../extension/tests/extension.spec.ts:272:1 › abstention and provider rate limits never create a selected response or trigger retry (6.6s)",
+    "2026-10-31T17:10:06.0525410Z   ✓   3 ../extension/tests/extension.spec.ts:306:1 › loading, partial failures and invalid context have honest, recoverable states (10.0s)",
+    "2026-10-31T17:10:08.0518116Z   ✓   4 ../extension/tests/extension.spec.ts:340:3 › preserves english input, script override and observed continuation (2.0s)",
+    "2026-10-31T17:10:13.0687551Z   ✓   5 ../extension/tests/extension.spec.ts:340:3 › preserves hindi input, script override and observed continuation (5.0s)",
+    "2026-10-31T17:10:18.0828558Z   ✓   6 ../extension/tests/extension.spec.ts:340:3 › preserves malayalam input, script override and observed continuation (5.0s)",
+    "2026-10-31T17:10:20.0513049Z   ✓   7 ../extension/tests/extension.spec.ts:340:3 › preserves hinglish input, script override and observed continuation (2.0s)",
+    "2026-10-31T17:10:25.0727496Z   ✓   8 ../extension/tests/extension.spec.ts:340:3 › preserves minglish input, script override and observed continuation (5.0s)",
+    "2026-10-31T17:10:26.8287936Z   ✓   9 ../extension/tests/extension.spec.ts:373:1 › real Chromium extracts only the selected comment and loaded thread context from authored YouTube DOM (1.7s)",
+    "2026-10-31T17:10:28.6449207Z   ✓  10 ../extension/tests/extension.spec.ts:412:1 › context is opt-in, role-checked and persisted separately from simulations (1.8s)",
+    "2026-10-31T17:10:29.9865981Z   ✓  11 ../extension/tests/extension.spec.ts:439:1 › inaccessible tab fallback, disconnected service and revocation are clear (1.3s)",
+    "2026-10-31T17:10:31.1528464Z   ✓  12 ../extension/tests/extension.spec.ts:457:1 › packaged permissions and browser storage contain no long-lived research or provider secret (1.2s)",
+    "2026-10-31T17:10:32.7401100Z   ✓  13 ../extension/tests/extension.spec.ts:485:1 › a rejected follow-up cannot display an earlier run as its recommendation (1.6s)",
+    "2026-10-31T17:10:32.7715515Z   13 passed (47.1s)",
+    "2026-10-31T17:10:34.2984915Z Artifact download URL: https://github.com/Hemarshitha/adaptive-counterspeech-fina/actions/runs/41223061466/artifacts/13050891884"
+  ]
+}

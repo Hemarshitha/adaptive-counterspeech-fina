@@ -1,0 +1,952 @@
+{
+  "disclosure": "Deterministic test-only model provider. Browser UI harness with emulated Chrome APIs/origin; real HTTP API, SQLite and dashboard.",
+  "run": {
+    "run_id": "1b53d8e4-f601-4cb5-abb8-503911867c91",
+    "conversation_id": "0c43540c-9443-4335-b7bc-3e5fa3da8cb0",
+    "status": "completed",
+    "request": {
+      "text": "TEST extension full workflow · researcher-authored fixture input.",
+      "conversation_id": "0c43540c-9443-4335-b7bc-3e5fa3da8cb0",
+      "initial_context": [],
+      "output_language": "english",
+      "output_script": "auto",
+      "mode": "full",
+      "candidate_count": 2,
+      "max_refinements": 1
+    },
+    "result": {
+      "schema_version": "1.0",
+      "mode": "full",
+      "analysis": {
+        "detected_language": "english",
+        "detected_script": "latin",
+        "suggested_output_language": "english",
+        "target": "group named in input",
+        "emotion": "anger",
+        "hostility": 0.8,
+        "language_uncertainty": "Test fixture, not a real detection.",
+        "context_summary": "Structured TEST fixture context."
+      },
+      "output_language": "english",
+      "output_script": "auto",
+      "rounds": [
+        {
+          "index": 0,
+          "candidates": [
+            {
+              "candidate_id": "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+              "round_index": 0,
+              "strategy": "empathy",
+              "text": "I understand your concern; blaming a whole group hurts people. (0)",
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.5325,
+              "eligible": false,
+              "decision_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ]
+            },
+            {
+              "candidate_id": "92ceca9e-3345-4b6b-963b-7f097e4163b7",
+              "round_index": 0,
+              "strategy": "factual_correction",
+              "text": "One person's behavior does not establish a claim about everyone. (0)",
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.5325,
+              "eligible": false,
+              "decision_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ]
+            }
+          ],
+          "ranking": [
+            "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+            "92ceca9e-3345-4b6b-963b-7f097e4163b7"
+          ],
+          "refinement_feedback": [
+            {
+              "candidate_id": "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+              "strategy": "empathy",
+              "text": "I understand your concern; blaming a whole group hurts people. (0)",
+              "rejection_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ],
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              }
+            },
+            {
+              "candidate_id": "92ceca9e-3345-4b6b-963b-7f097e4163b7",
+              "strategy": "factual_correction",
+              "text": "One person's behavior does not establish a claim about everyone. (0)",
+              "rejection_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ],
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              }
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "candidates": [
+            {
+              "candidate_id": "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+              "round_index": 1,
+              "strategy": "empathy",
+              "text": "I understand your concern; blaming a whole group hurts people. (1)",
+              "simulation": {
+                "reaction_class": "deescalate",
+                "probabilities": {
+                  "deescalate": 0.8,
+                  "neutral": 0.1,
+                  "escalate": 0.1
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.8475,
+              "eligible": true,
+              "decision_reasons": [
+                "all_required_gates_passed"
+              ]
+            },
+            {
+              "candidate_id": "53463946-eeea-4148-b077-8c7d5f8b7984",
+              "round_index": 1,
+              "strategy": "factual_correction",
+              "text": "One person's behavior does not establish a claim about everyone. (1)",
+              "simulation": {
+                "reaction_class": "deescalate",
+                "probabilities": {
+                  "deescalate": 0.7,
+                  "neutral": 0.2,
+                  "escalate": 0.1
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.8025,
+              "eligible": true,
+              "decision_reasons": [
+                "all_required_gates_passed"
+              ]
+            }
+          ],
+          "ranking": [
+            "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+            "53463946-eeea-4148-b077-8c7d5f8b7984"
+          ],
+          "refinement_feedback": []
+        }
+      ],
+      "selected": {
+        "candidate_id": "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+        "round_index": 1,
+        "strategy": "empathy",
+        "text": "I understand your concern; blaming a whole group hurts people. (1)",
+        "simulation": {
+          "reaction_class": "deescalate",
+          "probabilities": {
+            "deescalate": 0.8,
+            "neutral": 0.1,
+            "escalate": 0.1
+          },
+          "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+          "decision_summary": "Deterministic fixture for orchestration tests.",
+          "uncertainty": "Not a real prediction."
+        },
+        "assessment": {
+          "safe": true,
+          "toxicity": 0.05,
+          "relevance": 0.9,
+          "argument_strength": 0.8,
+          "language_quality": 0.9,
+          "language_matches": true,
+          "decision_summary": "Test-only assessment, not a validated metric."
+        },
+        "score": 0.8475,
+        "eligible": true,
+        "decision_reasons": [
+          "all_required_gates_passed"
+        ]
+      },
+      "outcome": "completed",
+      "disclosure": "Simulated reactions and assessment scores are uncalibrated model estimates, not observed human behavior or independently validated evaluation. Human review required."
+    },
+    "error_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "stage": "started",
+        "payload": {
+          "mode": "full",
+          "prompt_version": "greenfield-1.0",
+          "policy": {
+            "version": "policy-1.0-hypothesis",
+            "max_toxicity": 0.2,
+            "min_relevance": 0.5,
+            "max_escalation": 0.25,
+            "min_deescalation": 0.55
+          },
+          "schema_version": "1.0",
+          "reaction_probability_kind": "uncalibrated_model_estimate"
+        },
+        "created_at": "2026-10-31T17:04:58.032692+00:00"
+      },
+      {
+        "sequence": 2,
+        "stage": "context",
+        "payload": {
+          "observed_history": [],
+          "history_total": 0,
+          "history_included": 0,
+          "history_truncated": false,
+          "hostility_trend": []
+        },
+        "created_at": "2026-10-31T17:04:58.036954+00:00"
+      },
+      {
+        "sequence": 3,
+        "stage": "analysis",
+        "payload": {
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "detected_language": "english",
+            "detected_script": "latin",
+            "suggested_output_language": "english",
+            "target": "group named in input",
+            "emotion": "anger",
+            "hostility": 0.8,
+            "language_uncertainty": "Test fixture, not a real detection.",
+            "context_summary": "Structured TEST fixture context."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.038725+00:00"
+      },
+      {
+        "sequence": 4,
+        "stage": "context_adaptation",
+        "payload": {
+          "current_hostility": 0.8,
+          "hostility_delta": null,
+          "basis": "model_assessment_of_real_observed_inputs"
+        },
+        "created_at": "2026-10-31T17:04:58.040360+00:00"
+      },
+      {
+        "sequence": 5,
+        "stage": "generation",
+        "payload": {
+          "round_index": 0,
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "candidates": [
+              {
+                "strategy": "empathy",
+                "text": "I understand your concern; blaming a whole group hurts people. (0)"
+              },
+              {
+                "strategy": "factual_correction",
+                "text": "One person's behavior does not establish a claim about everyone. (0)"
+              }
+            ]
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.042512+00:00"
+      },
+      {
+        "sequence": 6,
+        "stage": "candidate",
+        "payload": {
+          "candidate_id": "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+          "round_index": 0,
+          "strategy": "empathy",
+          "text": "I understand your concern; blaming a whole group hurts people. (0)",
+          "simulation": null,
+          "assessment": null,
+          "score": null,
+          "eligible": false,
+          "decision_reasons": []
+        },
+        "created_at": "2026-10-31T17:04:58.044841+00:00"
+      },
+      {
+        "sequence": 7,
+        "stage": "simulation",
+        "payload": {
+          "round_index": 0,
+          "candidate_id": "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "reaction_class": "escalate",
+            "probabilities": {
+              "deescalate": 0.1,
+              "neutral": 0.1,
+              "escalate": 0.8
+            },
+            "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+            "decision_summary": "Deterministic fixture for orchestration tests.",
+            "uncertainty": "Not a real prediction."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.046464+00:00"
+      },
+      {
+        "sequence": 8,
+        "stage": "assessment",
+        "payload": {
+          "round_index": 0,
+          "candidate_id": "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "safe": true,
+            "toxicity": 0.05,
+            "relevance": 0.9,
+            "argument_strength": 0.8,
+            "language_quality": 0.9,
+            "language_matches": true,
+            "decision_summary": "Test-only assessment, not a validated metric."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.048198+00:00"
+      },
+      {
+        "sequence": 9,
+        "stage": "candidate",
+        "payload": {
+          "candidate_id": "92ceca9e-3345-4b6b-963b-7f097e4163b7",
+          "round_index": 0,
+          "strategy": "factual_correction",
+          "text": "One person's behavior does not establish a claim about everyone. (0)",
+          "simulation": null,
+          "assessment": null,
+          "score": null,
+          "eligible": false,
+          "decision_reasons": []
+        },
+        "created_at": "2026-10-31T17:04:58.049836+00:00"
+      },
+      {
+        "sequence": 10,
+        "stage": "simulation",
+        "payload": {
+          "round_index": 0,
+          "candidate_id": "92ceca9e-3345-4b6b-963b-7f097e4163b7",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "reaction_class": "escalate",
+            "probabilities": {
+              "deescalate": 0.1,
+              "neutral": 0.1,
+              "escalate": 0.8
+            },
+            "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+            "decision_summary": "Deterministic fixture for orchestration tests.",
+            "uncertainty": "Not a real prediction."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.051692+00:00"
+      },
+      {
+        "sequence": 11,
+        "stage": "assessment",
+        "payload": {
+          "round_index": 0,
+          "candidate_id": "92ceca9e-3345-4b6b-963b-7f097e4163b7",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "safe": true,
+            "toxicity": 0.05,
+            "relevance": 0.9,
+            "argument_strength": 0.8,
+            "language_quality": 0.9,
+            "language_matches": true,
+            "decision_summary": "Test-only assessment, not a validated metric."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.053444+00:00"
+      },
+      {
+        "sequence": 12,
+        "stage": "ranking",
+        "payload": {
+          "round_index": 0,
+          "policy": {
+            "version": "policy-1.0-hypothesis",
+            "max_toxicity": 0.2,
+            "min_relevance": 0.5,
+            "max_escalation": 0.25,
+            "min_deescalation": 0.55
+          },
+          "ranked_candidates": [
+            {
+              "candidate_id": "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+              "round_index": 0,
+              "strategy": "empathy",
+              "text": "I understand your concern; blaming a whole group hurts people. (0)",
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.5325,
+              "eligible": false,
+              "decision_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ]
+            },
+            {
+              "candidate_id": "92ceca9e-3345-4b6b-963b-7f097e4163b7",
+              "round_index": 0,
+              "strategy": "factual_correction",
+              "text": "One person's behavior does not establish a claim about everyone. (0)",
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.5325,
+              "eligible": false,
+              "decision_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ]
+            }
+          ],
+          "tie_breaker": "original_generation_order"
+        },
+        "created_at": "2026-10-31T17:04:58.055081+00:00"
+      },
+      {
+        "sequence": 13,
+        "stage": "refinement",
+        "payload": {
+          "from_round": 0,
+          "to_round": 1,
+          "reason": "no_candidate_passed_required_gates",
+          "feedback": [
+            {
+              "candidate_id": "d83559b1-f6ac-47a8-b89c-5767b8b1b4fc",
+              "strategy": "empathy",
+              "text": "I understand your concern; blaming a whole group hurts people. (0)",
+              "rejection_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ],
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              }
+            },
+            {
+              "candidate_id": "92ceca9e-3345-4b6b-963b-7f097e4163b7",
+              "strategy": "factual_correction",
+              "text": "One person's behavior does not establish a claim about everyone. (0)",
+              "rejection_reasons": [
+                "escalation_above_threshold",
+                "deescalation_below_threshold"
+              ],
+              "simulation": {
+                "reaction_class": "escalate",
+                "probabilities": {
+                  "deescalate": 0.1,
+                  "neutral": 0.1,
+                  "escalate": 0.8
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              }
+            }
+          ]
+        },
+        "created_at": "2026-10-31T17:04:58.056865+00:00"
+      },
+      {
+        "sequence": 14,
+        "stage": "generation",
+        "payload": {
+          "round_index": 1,
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "candidates": [
+              {
+                "strategy": "empathy",
+                "text": "I understand your concern; blaming a whole group hurts people. (1)"
+              },
+              {
+                "strategy": "factual_correction",
+                "text": "One person's behavior does not establish a claim about everyone. (1)"
+              }
+            ]
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.058950+00:00"
+      },
+      {
+        "sequence": 15,
+        "stage": "candidate",
+        "payload": {
+          "candidate_id": "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+          "round_index": 1,
+          "strategy": "empathy",
+          "text": "I understand your concern; blaming a whole group hurts people. (1)",
+          "simulation": null,
+          "assessment": null,
+          "score": null,
+          "eligible": false,
+          "decision_reasons": []
+        },
+        "created_at": "2026-10-31T17:04:58.060430+00:00"
+      },
+      {
+        "sequence": 16,
+        "stage": "simulation",
+        "payload": {
+          "round_index": 1,
+          "candidate_id": "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "reaction_class": "deescalate",
+            "probabilities": {
+              "deescalate": 0.8,
+              "neutral": 0.1,
+              "escalate": 0.1
+            },
+            "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+            "decision_summary": "Deterministic fixture for orchestration tests.",
+            "uncertainty": "Not a real prediction."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.061974+00:00"
+      },
+      {
+        "sequence": 17,
+        "stage": "assessment",
+        "payload": {
+          "round_index": 1,
+          "candidate_id": "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "safe": true,
+            "toxicity": 0.05,
+            "relevance": 0.9,
+            "argument_strength": 0.8,
+            "language_quality": 0.9,
+            "language_matches": true,
+            "decision_summary": "Test-only assessment, not a validated metric."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.064006+00:00"
+      },
+      {
+        "sequence": 18,
+        "stage": "candidate",
+        "payload": {
+          "candidate_id": "53463946-eeea-4148-b077-8c7d5f8b7984",
+          "round_index": 1,
+          "strategy": "factual_correction",
+          "text": "One person's behavior does not establish a claim about everyone. (1)",
+          "simulation": null,
+          "assessment": null,
+          "score": null,
+          "eligible": false,
+          "decision_reasons": []
+        },
+        "created_at": "2026-10-31T17:04:58.065578+00:00"
+      },
+      {
+        "sequence": 19,
+        "stage": "simulation",
+        "payload": {
+          "round_index": 1,
+          "candidate_id": "53463946-eeea-4148-b077-8c7d5f8b7984",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "reaction_class": "deescalate",
+            "probabilities": {
+              "deescalate": 0.7,
+              "neutral": 0.2,
+              "escalate": 0.1
+            },
+            "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+            "decision_summary": "Deterministic fixture for orchestration tests.",
+            "uncertainty": "Not a real prediction."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.067256+00:00"
+      },
+      {
+        "sequence": 20,
+        "stage": "assessment",
+        "payload": {
+          "round_index": 1,
+          "candidate_id": "53463946-eeea-4148-b077-8c7d5f8b7984",
+          "prompt_version": "greenfield-1.0",
+          "output": {
+            "safe": true,
+            "toxicity": 0.05,
+            "relevance": 0.9,
+            "argument_strength": 0.8,
+            "language_quality": 0.9,
+            "language_matches": true,
+            "decision_summary": "Test-only assessment, not a validated metric."
+          },
+          "metadata": {
+            "provider": "TEST_FIXTURE",
+            "provenance": "deterministic_test_fixture",
+            "input_tokens": null,
+            "output_tokens": null,
+            "cost": null
+          }
+        },
+        "created_at": "2026-10-31T17:04:58.068980+00:00"
+      },
+      {
+        "sequence": 21,
+        "stage": "ranking",
+        "payload": {
+          "round_index": 1,
+          "policy": {
+            "version": "policy-1.0-hypothesis",
+            "max_toxicity": 0.2,
+            "min_relevance": 0.5,
+            "max_escalation": 0.25,
+            "min_deescalation": 0.55
+          },
+          "ranked_candidates": [
+            {
+              "candidate_id": "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+              "round_index": 1,
+              "strategy": "empathy",
+              "text": "I understand your concern; blaming a whole group hurts people. (1)",
+              "simulation": {
+                "reaction_class": "deescalate",
+                "probabilities": {
+                  "deescalate": 0.8,
+                  "neutral": 0.1,
+                  "escalate": 0.1
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.8475,
+              "eligible": true,
+              "decision_reasons": [
+                "all_required_gates_passed"
+              ]
+            },
+            {
+              "candidate_id": "53463946-eeea-4148-b077-8c7d5f8b7984",
+              "round_index": 1,
+              "strategy": "factual_correction",
+              "text": "One person's behavior does not establish a claim about everyone. (1)",
+              "simulation": {
+                "reaction_class": "deescalate",
+                "probabilities": {
+                  "deescalate": 0.7,
+                  "neutral": 0.2,
+                  "escalate": 0.1
+                },
+                "simulated_reply": "TEST-ONLY imagined reply, never observed.",
+                "decision_summary": "Deterministic fixture for orchestration tests.",
+                "uncertainty": "Not a real prediction."
+              },
+              "assessment": {
+                "safe": true,
+                "toxicity": 0.05,
+                "relevance": 0.9,
+                "argument_strength": 0.8,
+                "language_quality": 0.9,
+                "language_matches": true,
+                "decision_summary": "Test-only assessment, not a validated metric."
+              },
+              "score": 0.8025,
+              "eligible": true,
+              "decision_reasons": [
+                "all_required_gates_passed"
+              ]
+            }
+          ],
+          "tie_breaker": "original_generation_order"
+        },
+        "created_at": "2026-10-31T17:04:58.070596+00:00"
+      },
+      {
+        "sequence": 22,
+        "stage": "completed",
+        "payload": {
+          "selected_candidate_id": "e7d0fb84-4b1b-424c-a8d5-75ade521118a",
+          "human_review_required": true,
+          "recommendation_is_observed_reply": false
+        },
+        "created_at": "2026-10-31T17:04:58.072273+00:00"
+      }
+    ],
+    "created_at": "2026-10-31T17:04:58.022759+00:00",
+    "updated_at": "2026-10-31T17:04:58.073658+00:00"
+  },
+  "conversation": {
+    "conversation_id": "0c43540c-9443-4335-b7bc-3e5fa3da8cb0",
+    "title": "YouTube · user-reviewed input",
+    "created_at": "2026-10-31T17:04:58.005213+00:00",
+    "active_run_id": null,
+    "turns": [
+      {
+        "turn_id": "b7c9b981-67fa-472a-984c-60530410c38c",
+        "sequence": 1,
+        "speaker": "original_speaker",
+        "text": "TEST extension full workflow · researcher-authored fixture input.",
+        "provenance": "user_provided_observation",
+        "created_at": "2026-10-31T17:04:58.026901+00:00"
+      }
+    ],
+    "runs": [
+      {
+        "run_id": "1b53d8e4-f601-4cb5-abb8-503911867c91",
+        "status": "completed"
+      }
+    ],
+    "hostility_trend": [
+      {
+        "run_id": "1b53d8e4-f601-4cb5-abb8-503911867c91",
+        "hostility": 0.8,
+        "detected_language": "english",
+        "provenance": "model_assessment_of_observed_input"
+      }
+    ]
+  }
+}

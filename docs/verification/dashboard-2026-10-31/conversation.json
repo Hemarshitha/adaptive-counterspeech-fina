@@ -1,0 +1,43 @@
+{
+  "input_origin": "Assistant-authored researcher-controlled test messages, not organically observed human comments.",
+  "conversation_id": "4c66160d-a93b-4d80-96f3-ff3b05d54bc1",
+  "title": "",
+  "created_at": "2026-10-31T16:19:41.008000+00:00",
+  "active_run_id": null,
+  "turns": [
+    {
+      "turn_id": "063bc37a-b067-4c38-a724-9f4ac7a98130",
+      "sequence": 1,
+      "speaker": "original_speaker",
+      "text": "I am angry that the park cleanup bins were left overflowing. Those volunteers are all useless and should stay out of our neighborhood.",
+      "provenance": "user_provided_observation",
+      "created_at": "2026-10-31T16:19:41.046205+00:00"
+    },
+    {
+      "turn_id": "c69e3241-a1ea-42c1-9e19-c82da6b09e68",
+      "sequence": 2,
+      "speaker": "original_speaker",
+      "text": "नीले कूड़ेदान अभी भी भरे हैं। मुझे स्वयंसेवकों की पूरी टीम पर गुस्सा है, लेकिन मैं सफाई की समस्या का हल चाहता हूँ।",
+      "provenance": "user_provided_observation",
+      "created_at": "2026-10-31T16:19:48.495112+00:00"
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "8858a371-4542-47f3-81d7-0477858c762f",
+      "status": "completed"
+    },
+    {
+      "run_id": "e9a7f10a-7446-4523-9bc4-b690c9ff1cba",
+      "status": "failed"
+    }
+  ],
+  "hostility_trend": [
+    {
+      "run_id": "8858a371-4542-47f3-81d7-0477858c762f",
+      "hostility": 0.9,
+      "detected_language": "english",
+      "provenance": "model_assessment_of_observed_input"
+    }
+  ]
+}

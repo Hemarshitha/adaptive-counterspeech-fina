@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Counterpoint · YouTube Counterspeech",
+  "version": "0.1.0",
+  "minimum_chrome_version": "116",
+  "description": "Review a YouTube comment, request counterspeech from your paired local research service, and edit/copy for manual posting.",
+  "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
+  "host_permissions": ["http://127.0.0.1/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open Counterpoint"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; connect-src http://127.0.0.1:*; base-uri 'none'"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA17f44w10lVCe7fvEvp/IOI7ivtfarYt54fZwMIfvgX3GI8a/ll2943Q41QldBz4ED6GGd5fWv/10UBE3xF/qKTeAxPYbW1I3muaSoFrUsDAKX6+/ExsGuEK4ivwrIePiZ3HrEUCY73RnnIKpKx5L+aaDK02XzmnoJTPnk2PF5ve1jXfMBCR+0RSQBQm1T4u6LzrRJpMKQ8mT1137/VmEynArxZajH0+t/cXHtbN1SvsDK+0xZa5FjMMR6Sswk0zeq8D4K36FuX9R2bq9xyuXllQ6xBXJHS+8R4/MsnCJXD4buZNKb8UFv9kqnPeACzGXk7VVZkO6tkNZzKjVFFwC+wIDAQAB"
+}
