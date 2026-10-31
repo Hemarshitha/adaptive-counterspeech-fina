@@ -344,6 +344,13 @@ for (const [language, text, script] of [
     expect(run.request.text).toBe(text);
     expect(run.request.output_language).toBe(language);
     expect(run.request.output_script).toBe(script);
+    expect(run.result.selected.script_validation.valid).toBe(true);
+    await expect(panel.locator("#scores")).toContainText(
+      "Unicode script check: passed",
+    );
+    await expect(
+      dashboard.locator(".decision-banner.recommendation .generated-text"),
+    ).toHaveText(run.result.selected.text);
     await expect(panel.getByLabel("Editable recommendation")).toHaveValue(
       run.result.selected.text,
     );
@@ -505,4 +512,32 @@ test("a rejected follow-up cannot display an earlier run as its recommendation",
   await panel.getByRole("button", { name: "Recover stored run" }).click();
   await expect(panel.getByRole("status")).toContainText("No run recorded");
   await expect(panel.getByLabel("Editable recommendation")).toBeHidden();
+});
+
+test("wrong-script Hinglish is withheld in panel and exact dashboard trace", async () => {
+  await submit(
+    "TEST wrong script: controlled Hinglish failure.",
+    "hinglish",
+    "romanized",
+    "1",
+  );
+  await expect(
+    panel.getByRole("heading", { name: "No response selected", exact: true }),
+  ).toBeVisible();
+  await expect(panel.getByLabel("Editable recommendation")).toBeHidden();
+  await expect(
+    panel.getByRole("button", { name: "Copy for manual posting" }),
+  ).toBeHidden();
+  await expect(panel.locator("#candidate-evidence")).toContainText(
+    "deterministic output script rejected",
+  );
+  const { run, dashboard } = await actualRun();
+  expect(run.result.selected).toBeNull();
+  expect(run.events.filter((e: any) => e.stage === "generation")).toHaveLength(
+    2,
+  );
+  expect(
+    run.events.some((e: any) => ["simulation", "assessment"].includes(e.stage)),
+  ).toBe(false);
+  await expect(dashboard.locator(".decision-pill.rejected")).toHaveCount(4);
 });

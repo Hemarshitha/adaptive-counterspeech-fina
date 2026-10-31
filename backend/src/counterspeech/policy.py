@@ -2,7 +2,7 @@ from counterspeech.schemas import Candidate, StrictModel, Unit
 
 
 class SelectionPolicy(StrictModel):
-    version: str = "policy-1.0-hypothesis"
+    version: str = "policy-1.1-script-hypothesis"
     max_toxicity: Unit = 0.20
     min_relevance: Unit = 0.50
     max_escalation: Unit = 0.25
@@ -10,6 +10,15 @@ class SelectionPolicy(StrictModel):
 
 
 def score_candidate(candidate: Candidate, policy: SelectionPolicy, with_simulation: bool):
+    if candidate.script_validation is None or not candidate.script_validation.valid:
+        candidate.eligible = False
+        candidate.score = None  # No fabricated model assessment/score for rejected text.
+        candidate.decision_reasons = ["deterministic_output_script_rejected"] + (
+            candidate.script_validation.reasons
+            if candidate.script_validation
+            else ["output_script_validation_missing"]
+        )
+        return candidate
     assessment = candidate.assessment
     if assessment is None:
         raise ValueError("Cannot score a candidate without assessment")

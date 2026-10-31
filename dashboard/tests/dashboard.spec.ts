@@ -270,3 +270,80 @@ for (const mode of ["single_shot", "no_simulation", "no_history"]) {
     }
   });
 }
+
+for (const [language, script, text] of [
+  ["english", "native", "TEST English comment"],
+  ["hindi", "native", "TEST हिन्दी comment"],
+  ["malayalam", "native", "TEST മലയാളം comment"],
+  ["hinglish", "romanized", "TEST Yeh Hinglish comment hai"],
+  ["minglish", "romanized", "TEST Ithu Minglish comment aanu"],
+]) {
+  test(`transmits and displays actual ${language} output and script evidence`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(
+      page.getByText("Backend connected · inference configured"),
+    ).toBeVisible();
+    await page.getByLabel("Comment to respond to").fill(text);
+    await page.getByLabel("Response language").selectOption(language);
+    await page.getByLabel("Required script").selectOption(script);
+    const response = page.waitForResponse(
+      (r) =>
+        r.url().endsWith("/api/v1/runs") && r.request().method() === "POST",
+    );
+    await page.getByRole("button", { name: "Run pipeline" }).click();
+    const run = await (await response).json();
+    expect(run.request.output_language).toBe(language);
+    expect(run.request.output_script).toBe(script);
+    expect(run.request.text).toBe(text);
+    expect(run.result.selected.script_validation.valid).toBe(true);
+    const selected = page.locator(
+      ".decision-banner.recommendation .generated-text",
+    );
+    await expect(selected).toHaveText(run.result.selected.text);
+    await expect(
+      page.getByRole("heading", { name: "Deterministic script validation" }),
+    ).toHaveCount(4);
+    const stored = await page.request.get(`/api/v1/runs/${run.run_id}`);
+    expect(await stored.json()).toEqual(run);
+  });
+}
+
+test("wrong-script candidates are visibly rejected without fabricated assessments or recommendation", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(
+    page.getByText("Backend connected · inference configured"),
+  ).toBeVisible();
+  await page
+    .getByLabel("Comment to respond to")
+    .fill("TEST wrong script: controlled Hinglish failure.");
+  await page.getByLabel("Response language").selectOption("hinglish");
+  await page.getByLabel("Required script").selectOption("romanized");
+  await page.getByLabel("Refinement limit").selectOption("1");
+  const response = page.waitForResponse(
+    (r) => r.url().endsWith("/api/v1/runs") && r.request().method() === "POST",
+  );
+  await page.getByRole("button", { name: "Run pipeline" }).click();
+  const run = await (await response).json();
+  expect(run.status).toBe("abstained");
+  expect(run.result.selected).toBeNull();
+  expect(run.events.filter((e: any) => e.stage === "generation")).toHaveLength(
+    2,
+  );
+  expect(
+    run.events.some((e: any) => ["simulation", "assessment"].includes(e.stage)),
+  ).toBe(false);
+  await expect(
+    page.getByRole("heading", { name: "Abstained · no response selected" }),
+  ).toBeVisible();
+  await expect(page.locator(".decision-pill.rejected")).toHaveCount(4);
+  await expect(
+    page.getByText(
+      "Script mismatch. Withheld before simulation and model assessment.",
+    ),
+  ).toHaveCount(4);
+  await expect(page.locator(".decision-banner.recommendation")).toHaveCount(0);
+});

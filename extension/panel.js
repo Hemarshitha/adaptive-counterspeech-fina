@@ -213,6 +213,9 @@ function renderRun(run) {
     const a = selected.assessment;
     $("scores").textContent =
       `${p ? `De-escalate: ${p.deescalate} · Neutral: ${p.neutral} · Escalate: ${p.escalate}\n` : ""}Selection score: ${selected.score ?? "unavailable"}${a ? `\nModel assessment · toxicity: ${a.toxicity} · relevance: ${a.relevance} · argument strength: ${a.argument_strength} · language quality: ${a.language_quality}` : ""}`;
+    $("scores").textContent += selected.script_validation
+      ? `\nUnicode script check: ${selected.script_validation.valid ? "passed" : "rejected"} · required ${selected.script_validation.expected_script}`
+      : "\nNo deterministic script check recorded.";
     $("simulated").textContent =
       selected.simulation?.simulated_reply || "No simulated reply recorded.";
     $("uncertainty").textContent =

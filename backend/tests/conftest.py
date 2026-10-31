@@ -47,6 +47,37 @@ TEXTS = {
     ],
 }
 
+# Script-specific authored fixtures. These fix previously misleading tests that
+# returned native Hindi for a Romanized request (and Latin for native Hinglish).
+ROMANIZED_TEXTS = {
+    "hindi": [
+        "Aapki chinta samajhta hoon, par poore samuday ko dosh dena uchit nahi hai.",
+        "Ek vyakti ka vyavahar poore samuday ka pratinidhitva nahi karta.",
+        "Asahmati ke bavjood sabhi samman ke haqdar hain.",
+        "Kya hum samuday ko dosh diye bina samasya par baat kar sakte hain?",
+    ],
+    "malayalam": [
+        "Ningalude aashanka manassilaakunnu, paksha ellavareyum kuttappedutharuthu.",
+        "Oraalude pravruthi oru samoohathe muzhuvan prathinidheekarikkunnilla.",
+        "Abhiprayavyathyasam undenkilum ellavarum bahumanam arhikkunnu.",
+        "Oru samoohathe kuttappeduthaathe prashnam charcha cheyyaamo?",
+    ],
+}
+NATIVE_MIXED_TEXTS = {
+    "hinglish": [
+        "आपकी concern समझता हूँ, पर पूरे group को blame करना सही नहीं है।",
+        "एक व्यक्ति का behavior पूरी community को define नहीं करता।",
+        "Disagreement के बावजूद सभी respect के हकदार हैं।",
+        "क्या हम group को blame किए बिना issue पर बात कर सकते हैं?",
+    ],
+    "minglish": [
+        "നിങ്ങളുടെ concern മനസ്സിലാകുന്നു, പക്ഷേ എല്ലാവരെയും blame ചെയ്യരുത്.",
+        "ഒരാളുടെ behavior ഒരു communityയെ മുഴുവൻ define ചെയ്യുന്നില്ല.",
+        "Disagreement ഉണ്ടെങ്കിലും എല്ലാവർക്കും respect വേണം.",
+        "ഒരു communityയെ blame ചെയ്യാതെ issue ചർച്ച ചെയ്യാമോ?",
+    ],
+}
+
 
 class FixtureProvider:
     def __init__(self, adverse_rounds=0, fail_stage=None, unsafe=False, language_matches=True):
@@ -78,9 +109,17 @@ class FixtureProvider:
         elif stage in {"generation", "baseline"}:
             self.round_index = data.get("round_index", 0)
             strategies = data.get("requested_strategies", ["direct_response"])
+            texts = TEXTS[language]
+            native = data.get("required_output_script") in {"devanagari", "malayalam"}
+            if data.get("output_script") == "romanized" or (
+                data.get("required_output_script") == "latin"
+            ):
+                texts = ROMANIZED_TEXTS.get(language, texts)
+            if data.get("output_script") == "native" or native:
+                texts = NATIVE_MIXED_TEXTS.get(language, texts)
             output = {
                 "candidates": [
-                    {"strategy": strategy, "text": TEXTS[language][i] + f" ({self.round_index})"}
+                    {"strategy": strategy, "text": texts[i] + f" ({self.round_index})"}
                     for i, strategy in enumerate(strategies)
                 ]
             }

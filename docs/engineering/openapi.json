@@ -551,6 +551,16 @@
             "type": "string",
             "title": "Text"
           },
+          "script_validation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OutputScriptValidation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "simulation": {
             "anyOf": [
               {
@@ -684,6 +694,70 @@
           "text"
         ],
         "title": "ObservedTurn"
+      },
+      "OutputScriptValidation": {
+        "properties": {
+          "validator_version": {
+            "type": "string",
+            "const": "unicode-script-1.0",
+            "title": "Validator Version",
+            "default": "unicode-script-1.0"
+          },
+          "unicode_version": {
+            "type": "string",
+            "title": "Unicode Version"
+          },
+          "requested_script": {
+            "$ref": "#/components/schemas/Script"
+          },
+          "expected_script": {
+            "type": "string",
+            "enum": [
+              "latin",
+              "devanagari",
+              "malayalam",
+              "undetermined"
+            ],
+            "title": "Expected Script"
+          },
+          "valid": {
+            "type": "boolean",
+            "title": "Valid"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "letter_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Letter Counts"
+          },
+          "disallowed_codepoints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Disallowed Codepoints"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "unicode_version",
+          "requested_script",
+          "expected_script",
+          "valid",
+          "reasons",
+          "letter_counts",
+          "disallowed_codepoints"
+        ],
+        "title": "OutputScriptValidation"
       },
       "ReactionProbabilities": {
         "properties": {

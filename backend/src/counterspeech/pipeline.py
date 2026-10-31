@@ -3,6 +3,7 @@ import logging
 from uuid import uuid4
 
 from counterspeech.config import Settings
+from counterspeech.output_script import required_script, validate_output_script
 from counterspeech.policy import SelectionPolicy, rank_candidates, score_candidate
 from counterspeech.prompts import PROMPT_VERSION, system_prompt
 from counterspeech.providers.base import Provider, ProviderError
@@ -121,7 +122,13 @@ class Pipeline:
         analysis = await self._call(run_id, "analysis", data, Analysis)
         output_language = request.output_language or analysis.suggested_output_language
         data.update(
-            {"analysis": analysis.model_dump(mode="json"), "output_language": output_language.value}
+            {
+                "analysis": analysis.model_dump(mode="json"),
+                "output_language": output_language.value,
+                "required_output_script": required_script(
+                    output_language, request.output_script, request.text
+                ),
+            }
         )
         trend = memory["hostility_trend"]
         self.store.add_event(
@@ -163,9 +170,21 @@ class Pipeline:
             current = Round(index=round_index, candidates=candidates)
             for draft in generated.candidates:
                 candidate = Candidate(
-                    candidate_id=uuid4(), round_index=round_index, **draft.model_dump()
+                    candidate_id=uuid4(),
+                    round_index=round_index,
+                    **draft.model_dump(),
+                    script_validation=validate_output_script(
+                        draft.text, output_language, request.output_script, request.text
+                    ),
                 )
+                if not candidate.script_validation.valid:
+                    score_candidate(candidate, self.policy, use_simulation)
                 self.store.add_event(run_id, "candidate", candidate.model_dump(mode="json"))
+                current.candidates.append(candidate)
+                if not candidate.script_validation.valid:
+                    # Reject before expensive inference. The ordinary refinement
+                    # budget is the ONLY retry path; never silently repair text.
+                    continue
                 candidate_data = {**data, "candidate": draft.model_dump(mode="json")}
                 links = {"round_index": round_index, "candidate_id": str(candidate.candidate_id)}
                 if use_simulation:
@@ -176,7 +195,6 @@ class Pipeline:
                     run_id, "assessment", candidate_data, Assessment, **links
                 )
                 score_candidate(candidate, self.policy, use_simulation)
-                current.candidates.append(candidate)
             ranked = rank_candidates(current.candidates)
             current.ranking = [c.candidate_id for c in ranked]
             rounds.append(current)
@@ -211,7 +229,10 @@ class Pipeline:
                         "simulation": c.simulation.model_dump(mode="json")
                         if c.simulation
                         else None,
-                        "assessment": c.assessment.model_dump(mode="json"),
+                        "assessment": c.assessment.model_dump(mode="json")
+                        if c.assessment
+                        else None,
+                        "script_validation": c.script_validation.model_dump(mode="json"),
                     }
                     for c in ranked
                 ]
@@ -244,6 +265,9 @@ class Pipeline:
                 "current_text": request.text,
                 "output_language": request.output_language,
                 "output_script": request.output_script.value,
+                "required_output_script": required_script(
+                    request.output_language, request.output_script, request.text
+                ),
             },
             Generation,
         )
@@ -253,8 +277,16 @@ class Pipeline:
             candidate_id=uuid4(),
             round_index=0,
             **generated.candidates[0].model_dump(),
+            script_validation=validate_output_script(
+                generated.candidates[0].text,
+                request.output_language,
+                request.output_script,
+                request.text,
+            ),
             decision_reasons=["single_shot_baseline_unevaluated_requires_human_review"],
         )
+        if not candidate.script_validation.valid:
+            score_candidate(candidate, self.policy, False)
         self.store.add_event(run_id, "candidate", candidate.model_dump(mode="json"))
         return RunResult(
             mode=request.mode,
@@ -262,7 +294,7 @@ class Pipeline:
             output_language=request.output_language,
             output_script=request.output_script,
             rounds=[Round(index=0, candidates=[candidate])],
-            selected=candidate,
-            outcome="completed",
-            disclosure="Single-shot zero-shot baseline: no simulation, safety/quality assessment or refinement. Unevaluated research output; human review required.",
+            selected=candidate if candidate.script_validation.valid else None,
+            outcome="completed" if candidate.script_validation.valid else "abstained",
+            disclosure="Single-shot zero-shot baseline: deterministic script validation only; no simulation, model safety/quality assessment or refinement. Unevaluated research output; human review required.",
         )

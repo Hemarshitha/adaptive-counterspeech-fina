@@ -1,3 +1,17 @@
+# Project status — multilingual script validation
+
+Updated: **31 October 2026**. Continued `feat/greenfield-research-engine` from exactly **`af8cb9fbdc3e02514551504084a54a82a787983c`**. Main is unchanged; PR #1 remains open/unmerged. Original academic scope and source documents are preserved.
+
+Fixed the demonstrated Hinglish script-gate defect: explicit Romanized Hinglish/Minglish generation/refinement instructions plus independent deterministic Unicode validation of every generated/refined candidate. Invalid text is preserved and rejected before simulation/assessment, with null model scores, candidate-specific script feedback and only the existing bounded refinement budget. The one-call baseline also rejects invalid script without gaining model assessment or refinement. Native Hindi/Malayalam and native code mixing with English are accepted. Current-turn auto resolution and stored real history are preserved; legacy traces identify missing checks honestly. Dashboard/extension display actual script evidence and abstention, with no copyable wrong-script recommendation.
+
+Actual local results: **117 backend passed / 1 optional PostgreSQL skipped**, **7 dashboard UI + 17 proxy/pairing HTTP**, **4 extension client**, **15 dashboard browser**, **14 extension web-harness browser tests passed**. Build, lint/format, dependency consistency, extension packaging and whitespace checks passed. Normal remote CI additionally uses PostgreSQL and an installed MV3 extension; inspect the pushed commit's CI separately. Local extension browser coverage explicitly emulates Chrome APIs/origin transport because managed Chromium forbids installation.
+
+**One controlled real Groq generation request passed** with `openai/gpt-oss-120b`: same original Hinglish input, two actual drafts, zero retries, both entirely Latin by production Unicode validation and a separate native-range audit. **1,726 reported tokens**. No further inference was made. This is generation-only script verification: no live analysis/simulation/assessment/selection/refinement was requested, and no draft is called a recommendation. Broader multilingual/model quality, meaning preservation during regeneration, native-speaker assessment, full live refinement and human efficacy remain unverified. Future model script failures are rejected, not silently recommended.
+
+See [full report](docs/verification/multilingual-script-2026-10-31/REPORT.md), exact historical-output regression evidence and actual live JSON beside it. New automated language fixtures establish contracts only; they are not research data. The historical sections below retain their original-time results and limitations.
+
+---
+
 # Project status — Milestone 6: YouTube browser extension
 
 Updated: **31 October 2026**. Branch: `feat/greenfield-research-engine`. Started from the explicitly requested **`49233244b547262485d2682c407f9aa330fafd25`** after fetching/checking it out; main is unchanged and PR #1 stays open/unmerged.

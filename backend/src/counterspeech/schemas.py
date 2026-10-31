@@ -136,11 +136,24 @@ class Assessment(StrictModel):
     decision_summary: Brief
 
 
+class OutputScriptValidation(StrictModel):
+    validator_version: Literal["unicode-script-1.0"] = "unicode-script-1.0"
+    unicode_version: str
+    requested_script: Script
+    expected_script: Literal["latin", "devanagari", "malayalam", "undetermined"]
+    valid: bool
+    reasons: list[str]
+    letter_counts: dict[str, int]
+    disallowed_codepoints: list[str]
+
+
 class Candidate(StrictModel):
     candidate_id: UUID
     round_index: int
     strategy: Strategy
     text: str
+    # None identifies historical traces that predate the deterministic gate.
+    script_validation: OutputScriptValidation | None = None
     simulation: Simulation | None = None
     assessment: Assessment | None = None
     score: Unit | None = None

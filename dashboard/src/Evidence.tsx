@@ -364,6 +364,8 @@ function CandidateCard({
   const s = c.simulation;
   const a = c.assessment;
   const assessed = c.score != null;
+  const scriptRejected = c.script_validation?.valid === false;
+  const rejected = !c.eligible && (assessed || scriptRejected);
   const policy = run.events.find((e) => e.stage === "started")?.payload.policy;
   const gates =
     a && policy
@@ -407,25 +409,51 @@ function CandidateCard({
       : [];
   return (
     <article
-      className={`panel candidate-card ${selected ? "chosen" : assessed && !c.eligible ? "rejected" : ""}`}
+      className={`panel candidate-card ${selected ? "chosen" : rejected ? "rejected" : ""}`}
     >
       <div className="candidate-heading">
         <span className="strategy">{pretty(c.strategy)}</span>
         <span
-          className={`decision-pill ${selected ? "selected" : assessed && !c.eligible ? "rejected" : ""}`}
+          className={`decision-pill ${selected ? "selected" : rejected ? "rejected" : ""}`}
         >
           {selected
             ? run.request.mode === "single_shot"
               ? "Baseline output"
               : "Selected"
-            : assessed
-              ? c.eligible
-                ? "Eligible · not selected"
-                : "Rejected"
-              : "Not assessed"}
+            : rejected
+              ? "Rejected"
+              : assessed
+                ? c.eligible
+                  ? "Eligible · not selected"
+                  : "Rejected"
+                : "Not assessed"}
         </span>
       </div>
       <p className="generated-text candidate-text">{c.text}</p>
+      <div className="candidate-block">
+        <h3>Deterministic script validation</h3>
+        {c.script_validation ? (
+          <>
+            <p className="help">
+              {c.script_validation.valid ? "Passed" : "Rejected"} · required{" "}
+              {c.script_validation.expected_script} ·{" "}
+              {c.script_validation.validator_version}
+            </p>
+            {scriptRejected && (
+              <p className="help">
+                Script mismatch. Withheld before simulation and model
+                assessment.
+              </p>
+            )}
+            <details>
+              <summary>Inspect Unicode script evidence</summary>
+              <Json value={c.script_validation} />
+            </details>
+          </>
+        ) : (
+          <p className="muted">No deterministic script check recorded.</p>
+        )}
+      </div>
       <div className="candidate-score">
         <span>{rank > 0 ? `Rank #${rank}` : "Unranked"}</span>
         <span>

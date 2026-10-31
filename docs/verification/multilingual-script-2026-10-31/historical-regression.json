@@ -1,0 +1,96 @@
+[
+  {
+    "historical_run_id": "e3a6e570-f915-4914-a27c-86ab13d0eb3a",
+    "historical_candidate_id": "6432b76e-e68e-4b3a-ae3e-86dff997003e",
+    "original_text": "Main samajh sakta/ sakti hoon ki night shift ka schedule thakane wala ho sakta hai aur kabhi‑kabhi kaam mein galtiyan ho jaati hain, jo aapko निराश कर सकता है।",
+    "historical_assessor_language_matches": false,
+    "current_validation": {
+      "validator_version": "unicode-script-1.0",
+      "unicode_version": "15.0.0",
+      "requested_script": "romanized",
+      "expected_script": "latin",
+      "valid": false,
+      "reasons": [
+        "output_script_disallowed_characters"
+      ],
+      "letter_counts": {
+        "latin": 114,
+        "devanagari": 9,
+        "malayalam": 0,
+        "other": 0
+      },
+      "disallowed_codepoints": [
+        "U+0915",
+        "U+0924",
+        "U+0928",
+        "U+0930",
+        "U+0936",
+        "U+0938",
+        "U+0939",
+        "U+093E",
+        "U+093F",
+        "U+0948",
+        "U+0964"
+      ]
+    }
+  },
+  {
+    "historical_run_id": "e3a6e570-f915-4914-a27c-86ab13d0eb3a",
+    "historical_candidate_id": "5e0e3f53-d908-4bff-96f4-478c08de262a",
+    "original_text": "Yeh kehna सही नहीं है कि सभी night‑shift कर्मचारियों की attitude careless है; कई लोग इस समय‑सारणी में भी बहुत मेहनत और जिम्मेदारी से काम करते हैं, और उनका अनुभव टीम के निर्णयों में अलग दृष्टिकोण ला सकता है।",
+    "historical_assessor_language_matches": true,
+    "current_validation": {
+      "validator_version": "unicode-script-1.0",
+      "unicode_version": "15.0.0",
+      "requested_script": "romanized",
+      "expected_script": "latin",
+      "valid": false,
+      "reasons": [
+        "output_script_disallowed_characters"
+      ],
+      "letter_counts": {
+        "latin": 34,
+        "devanagari": 81,
+        "malayalam": 0,
+        "other": 0
+      },
+      "disallowed_codepoints": [
+        "U+0902",
+        "U+0905",
+        "U+0907",
+        "U+0908",
+        "U+0909",
+        "U+0914",
+        "U+0915",
+        "U+0917",
+        "U+091A",
+        "U+091C",
+        "U+091F",
+        "U+0923",
+        "U+0924",
+        "U+0926",
+        "U+0928",
+        "U+092C",
+        "U+092D",
+        "U+092E",
+        "U+092F",
+        "U+0930",
+        "U+0932",
+        "U+0935",
+        "U+0937",
+        "U+0938",
+        "U+0939",
+        "U+093E",
+        "U+093F",
+        "U+0940",
+        "U+0941",
+        "U+0943",
+        "U+0947",
+        "U+0948",
+        "U+094B",
+        "U+094D",
+        "U+0964"
+      ]
+    }
+  }
+]

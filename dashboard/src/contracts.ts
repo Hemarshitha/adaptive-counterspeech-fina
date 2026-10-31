@@ -44,6 +44,16 @@ export interface Candidate {
   round_index: number;
   strategy: string;
   text: string;
+  script_validation?: {
+    validator_version: string;
+    unicode_version: string;
+    requested_script: string;
+    expected_script: string;
+    valid: boolean;
+    reasons: string[];
+    letter_counts: Record<string, number>;
+    disallowed_codepoints: string[];
+  } | null;
   simulation: Simulation | null;
   assessment: Assessment | null;
   score: number | null;

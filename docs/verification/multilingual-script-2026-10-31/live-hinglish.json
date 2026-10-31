@@ -1,0 +1,90 @@
+{
+  "source_base_commit": "af8cb9fbdc3e02514551504084a54a82a787983c",
+  "prompt_version": "greenfield-1.1-script",
+  "input_provenance": "assistant_authored_researcher_controlled_test_input",
+  "organically_observed_human_message": false,
+  "scope": "One production-adapter generation call, two drafts; independent Unicode script check. No analysis, simulation, assessment, selection, refinement, or efficacy evaluation.",
+  "maximum_inference_requests": 1,
+  "provider_retries": 0,
+  "started_at": "2026-10-31T17:36:51.167161+00:00",
+  "input": {
+    "current_text": "Night shift wale sab careless hain, unki opinion team meeting mein kyun sunni chahiye?",
+    "observed_history": [],
+    "hostility_trend": [],
+    "output_language": "hinglish",
+    "output_script": "romanized",
+    "required_output_script": "latin",
+    "requested_strategies": [
+      "empathy",
+      "factual_correction"
+    ],
+    "round_index": 0,
+    "refinement_feedback": []
+  },
+  "generation": {
+    "candidates": [
+      {
+        "strategy": "empathy",
+        "text": "Main aapki baat samajh sakta hoon—kabhi kabhi night shift ke logon ke kaam ke tareeke se frustration ho sakti hai, especially jab workload uneven lagta hai."
+      },
+      {
+        "strategy": "factual_correction",
+        "text": "Har ek night shift employee alag hota hai; unki alag timing se valuable insights mil sakti hain jo team ke decisions ko behtar bana sakti hain, isliye unki opinion ko bhi sunna faydemand hota hai."
+      }
+    ]
+  },
+  "metadata": {
+    "provider": "openai_compatible",
+    "requested_model": "openai/gpt-oss-120b",
+    "reported_model": "openai/gpt-oss-120b",
+    "latency_ms": 2139.76,
+    "attempts": 1,
+    "input_tokens": 1067,
+    "output_tokens": 659,
+    "cost": null,
+    "temperature": 0,
+    "max_tokens": 3000,
+    "prompt_sha256": "9b11c6b7aba15ece04901e5784350064fe400d869278dc060faedad816d9ace7",
+    "data_sha256": "c8ac5bfa9548f414fbe21d306299880aed26fac5ae99d1ac1349a5fdd682a4c4",
+    "provenance": "live_provider_response"
+  },
+  "checks": [
+    {
+      "validator_version": "unicode-script-1.0",
+      "unicode_version": "15.0.0",
+      "requested_script": "romanized",
+      "expected_script": "latin",
+      "valid": true,
+      "reasons": [],
+      "letter_counts": {
+        "latin": 128,
+        "devanagari": 0,
+        "malayalam": 0,
+        "other": 0
+      },
+      "disallowed_codepoints": []
+    },
+    {
+      "validator_version": "unicode-script-1.0",
+      "unicode_version": "15.0.0",
+      "requested_script": "romanized",
+      "expected_script": "latin",
+      "valid": true,
+      "reasons": [],
+      "letter_counts": {
+        "latin": 159,
+        "devanagari": 0,
+        "malayalam": 0,
+        "other": 0
+      },
+      "disallowed_codepoints": []
+    }
+  ],
+  "strategies_match": true,
+  "independent_native_range_audit": [
+    true,
+    true
+  ],
+  "status": "passed_generation_script_check",
+  "finished_at": "2026-10-31T17:36:53.384122+00:00"
+}
