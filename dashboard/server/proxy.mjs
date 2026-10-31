@@ -119,13 +119,19 @@ export function createHandler({
         }
         body = Buffer.concat(chunks);
       }
+      const disconnected = new AbortController();
+      const onClose = () => disconnected.abort();
+      res.once("close", onClose);
       try {
         const upstream = await fetchImpl(new URL(path + query, backend), {
           method: req.method,
           body,
           headers: { "Content-Type": "application/json", "X-API-Key": apiKey },
           redirect: "error",
-          signal: AbortSignal.timeout(timeoutMs),
+          signal: AbortSignal.any([
+            AbortSignal.timeout(timeoutMs),
+            disconnected.signal,
+          ]),
         });
         const data = await upstream.text();
         if (
@@ -141,9 +147,12 @@ export function createHandler({
         res.end(data);
       } catch {
         // Never echo transport exceptions, environment values or credential-bearing request objects.
-        json(res, 502, {
-          detail: { code: "backend_unreachable_or_timed_out" },
-        });
+        if (!res.destroyed)
+          json(res, 502, {
+            detail: { code: "backend_unreachable_or_timed_out" },
+          });
+      } finally {
+        res.off("close", onClose);
       }
       return;
     }

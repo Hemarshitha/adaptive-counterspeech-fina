@@ -88,6 +88,7 @@ def create_app(settings: Settings | None = None, provider: Provider | None = Non
             "languages": list(Language),
             "modes": list(Mode),
             "max_refinements": 2,
+            "max_run_seconds": settings.max_run_seconds,
             "reaction_probability_kind": "uncalibrated_model_estimate",
             "inference_configured": live_provider is not None,
             "auto_posting": False,

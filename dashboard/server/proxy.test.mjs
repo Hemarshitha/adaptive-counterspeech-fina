@@ -145,3 +145,95 @@ test("development middleware never receives private file or server-source reques
     await new Promise((resolve) => local.close(resolve));
   }
 });
+
+for (const phase of ["headers", "body"])
+  test(
+    `bounded proxy timeout covers delayed upstream ${phase}`,
+    { timeout: 2000 },
+    async () => {
+      let handler;
+      const local = createServer((req, res) => handler(req, res));
+      await new Promise((resolve) => local.listen(0, "127.0.0.1", resolve));
+      const port = local.address().port;
+      handler = createHandler({
+        backendUrl: "http://127.0.0.1:8000",
+        apiKey: key,
+        port,
+        timeoutMs: 20,
+        fetchImpl: async (url, { signal }) => {
+          if (phase === "headers")
+            return new Promise((resolve, reject) =>
+              signal.addEventListener("abort", () => reject(new Error(key)), {
+                once: true,
+              }),
+            );
+          return new Response(
+            new ReadableStream({
+              start(controller) {
+                signal.addEventListener(
+                  "abort",
+                  () => controller.error(new Error(key)),
+                  { once: true },
+                );
+              },
+            }),
+            { headers: { "content-type": "application/json" } },
+          );
+        },
+      });
+      try {
+        const response = await fetch(`http://127.0.0.1:${port}/api/v1/runs`);
+        assert.equal(response.status, 502);
+        const body = await response.text();
+        assert(body.includes("backend_unreachable_or_timed_out"));
+        assert(!body.includes(key));
+      } finally {
+        await new Promise((resolve) => local.close(resolve));
+      }
+    },
+  );
+
+test(
+  "client disconnect cancels the upstream fetch",
+  { timeout: 2000 },
+  async () => {
+    let handler, upstreamEntered, upstreamAborted;
+    const entered = new Promise((resolve) => {
+      upstreamEntered = resolve;
+    });
+    const aborted = new Promise((resolve) => {
+      upstreamAborted = resolve;
+    });
+    const local = createServer((req, res) => handler(req, res));
+    await new Promise((resolve) => local.listen(0, "127.0.0.1", resolve));
+    const port = local.address().port;
+    handler = createHandler({
+      backendUrl: "http://127.0.0.1:8000",
+      apiKey: key,
+      port,
+      fetchImpl: async (url, { signal }) =>
+        new Promise((resolve, reject) => {
+          upstreamEntered();
+          signal.addEventListener(
+            "abort",
+            () => {
+              upstreamAborted();
+              reject(new Error(key));
+            },
+            { once: true },
+          );
+        }),
+    });
+    const client = request(`http://127.0.0.1:${port}/api/v1/runs`);
+    client.on("error", () => {});
+    client.end();
+    try {
+      await entered;
+      client.destroy();
+      await aborted;
+    } finally {
+      client.destroy();
+      await new Promise((resolve) => local.close(resolve));
+    }
+  },
+);

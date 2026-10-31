@@ -16,6 +16,8 @@ The engine generates strategy-specific candidates, simulates each candidate's po
 
 ## Local startup
 
+Already installed from the feature-branch ZIP? See the [minimal Groq pacing update guide](docs/engineering/GROQ_PACING.md) to replace only nine runtime files, preserve your configuration and SQLite runs, and enable bounded waits without reinstalling.
+
 ### Windows / PowerShell: backend and dashboard
 
 Install **Python 3.12** and **Node.js 22.12+** (Node 24 is also supported). Start in the repository root on `feat/greenfield-research-engine`. The copy/token steps below are for first setup; preserve any existing configured `.env` files. No global Python activation or PowerShell execution-policy change is needed:

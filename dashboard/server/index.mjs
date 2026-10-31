@@ -1,20 +1,36 @@
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
-import { config } from "dotenv";
+import { readFileSync } from "node:fs";
+import { config, parse } from "dotenv";
 import { Agent } from "undici";
 import { createHandler } from "./proxy.mjs";
+import { deadlines } from "./deadlines.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 config({ path: resolve(root, ".env"), quiet: true });
 const port = Number(process.env.DASHBOARD_PORT || 5173);
-const timeoutMs = Number(process.env.DASHBOARD_TIMEOUT_MS || 660000);
+// Read only the backend deadline from its existing configuration; never inject
+// backend credentials into the dashboard environment or print the file.
+let backendEnv = {};
+try {
+  backendEnv = parse(readFileSync(resolve(root, "../.env")));
+} catch (error) {
+  if (error.code !== "ENOENT")
+    throw new Error("Cannot read backend deadline configuration");
+}
+const { timeoutMs } = deadlines(
+  process.env.DASHBOARD_BACKEND_MAX_RUN_SECONDS ??
+    process.env.MAX_RUN_SECONDS ??
+    backendEnv.MAX_RUN_SECONDS ??
+    600,
+  process.env.DASHBOARD_TIMEOUT_MS ?? 660000,
+);
 if (
   !Number.isInteger(port) ||
   port < 1024 ||
   port > 65535 ||
-  !Number.isFinite(timeoutMs) ||
-  timeoutMs < 1000
+  !Number.isFinite(timeoutMs)
 ) {
   throw new Error("Invalid dashboard port or timeout");
 }

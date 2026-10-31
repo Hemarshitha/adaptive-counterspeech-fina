@@ -1,3 +1,61 @@
+# Project status — opt-in Groq rate-limit pacing
+
+Updated: **1 November 2026**. Work branch: `fix/groq-rate-limit-pacing`, based on exactly `3cb7b3d60d3fbfb3628961da8b01f13634f8b09a` from `feat/greenfield-research-engine`. No merge into main, database reset/migration, local credential-file replacement, extension modification, prompt/threshold/scoring change or new evaluation result.
+
+Implemented opt-in asynchronous Groq pacing shared by a backend provider instance. Successful token-budget/reset headers guide admission; the configured RPM interval remains separate from Groq's daily request headers. HTTP 429 honors valid Retry-After/token reset lower bounds and uses conservative fallback for missing/invalid hints. Over-budget waits fail without clipping provider hints or retrying early. Daily quota classification/latching, finite attempt/call/run budgets, cancellation-safe locking and task-local sanitized persisted progress events preserve the actual inference pipeline. The dashboard validates proxy headroom against the configured backend deadline, extends its Undici timers, and cancels its fetch on client disconnect. Its existing execution log displays the saved progress events.
+
+[Configuration, limitations and exact minimal Windows ZIP update instructions](docs/engineering/GROQ_PACING.md). [Runtime-only update ZIP](docs/updates/groq-pacing-update.zip): **nine runtime files plus UPDATE-WINDOWS.md**. No dependencies, frontend assets, extension files, secrets or SQLite data are packaged; no reinstall or dashboard rebuild is required. ZIP contents were compared byte-for-byte with the source and CRC-checked. The configured projectless output directory was read-only, so the archive is versioned on this separate repository branch.
+
+## Actual verification
+
+- Final complete backend suite on **Python 3.11.17**: `work/.venv311/bin/python -m pytest backend/tests -q` → **190 passed, 1 skipped in 11.15s**. The optional PostgreSQL test skipped because `TEST_DATABASE_URL` was not configured. One existing upstream Starlette/HTTPX deprecation warning. SQLite tests use temporary databases only.
+- Backend tests include header-driven successful pacing, RPM spacing, 429 success/exhaustion, malformed/missing headers, excessive Retry-After without early retry, daily exhaustion, concurrent serialization with isolated progress sinks, cancellation during queue/pacing/HTTP, call/run deadlines, persisted wait/retry/failure events and claim release. Thirty full mock-HTTP multi-turn cases cover 2/3/4 candidates × five languages × selection/abstention after exactly two triggered refinements. Candidate-specific simulations/assessments, ranking, deterministic script gates and observed-history separation remain verified. Earlier Python 3.12.14 regression also passed 188 tests before the final two persistence cases were added; the final 190-test result is Python 3.11.
+- Dashboard on **Node 22.23.4**: `npm test` → **7 UI/projection tests + 22 HTTP server/proxy/pairing/deadline tests passed**, no failures. Includes delayed upstream headers/body and client-disconnect cancellation.
+- Browser: `PATH=<Node 22 bin> PYTHON=<Python 3.11 venv> CHROMIUM_PATH=/usr/bin/chromium npm run test:e2e` → **15 passed in 31.5s**. Real Chromium → Node → FastAPI → temporary SQLite; all model outputs are explicit test fixtures. No extension browser testing was needed; extension source is unchanged and existing proxy/pairing tests passed.
+- `npm run build`, `npm run format:check`, `ruff check backend`, `ruff format --check backend`, `pip check` and `git diff --check` passed. Final Python formatting checks cover 24 files. Node 24/Python 3.12 were also used during initial checks; the requested Python 3.11/Node 22 combination was then explicitly verified.
+- Preservation audit: proposal/spec/instructions, prompts, policy, script validator, model/request schemas, store, migrations, extension, prior verification/evaluation evidence, dependency locks and browser source/assets are unchanged. No `.env` or saved database is tracked in this update.
+- **No live Groq request was made or quota spent.** No successful real-model, fluency, efficacy, human evaluation or calibrated prediction is claimed. Remote CI outcomes must be read separately after publication; local results do not establish a CI pass.
+
+## Changed files (19)
+
+Runtime (nine):
+
+- `backend/src/counterspeech/api.py`
+- `backend/src/counterspeech/config.py`
+- `backend/src/counterspeech/pipeline.py`
+- `backend/src/counterspeech/providers/base.py`
+- `backend/src/counterspeech/providers/openai_compatible.py`
+- `backend/src/counterspeech/providers/rate_limit.py` (new)
+- `dashboard/server/deadlines.mjs` (new)
+- `dashboard/server/index.mjs`
+- `dashboard/server/proxy.mjs`
+
+Tests (four):
+
+- `backend/tests/test_provider.py`
+- `backend/tests/test_rate_limited_pipeline.py` (new)
+- `dashboard/server/deadlines.test.mjs` (new)
+- `dashboard/server/proxy.test.mjs`
+
+Templates/documentation/artifact (six):
+
+- `.env.example`
+- `dashboard/.env.example`
+- `README.md`
+- `PROJECT_STATUS.md`
+- `docs/engineering/GROQ_PACING.md` (new)
+- `docs/updates/groq-pacing-update.zip` (new)
+
+## Operational limits and remaining verification
+
+Use one backend process/provider instance for local coordination. Other processes/apps/keys have independent state; provider limits always remain authoritative. Header information can be incomplete, token allowance is conservative, a single oversized request cannot be fixed by pacing, and daily quota may be exhausted. Runs may still time out under slow inference/concurrent load; all waits and attempts are bounded and partial traces survive. A proxy disconnect cancels the upstream fetch but does not guarantee ASGI task cancellation; inspect the saved run before resubmitting. The synchronous API and research selection/refinement triggers are unchanged.
+
+Recommended explicit settings for this account: root `.env` `PROVIDER_GROQ_PACING=true`, `PROVIDER_CALL_DEADLINE_SECONDS=300`, `MAX_RUN_SECONDS=1800`; existing `dashboard/.env` `DASHBOARD_TIMEOUT_MS=1860000`. Existing default spacing is 2.1 seconds, missing-header fallback 60 seconds, maximum single wait 120 seconds and retries two. Keep all existing credentials and the exact database path. A real Groq test remains pending explicit user authorization.
+
+Historical status and evaluation evidence follows unchanged.
+
+---
+
 # Project status — multilingual script validation
 
 Updated: **31 October 2026**. Continued `feat/greenfield-research-engine` from exactly **`af8cb9fbdc3e02514551504084a54a82a787983c`**. Main is unchanged; PR #1 remains open/unmerged. Original academic scope and source documents are preserved.

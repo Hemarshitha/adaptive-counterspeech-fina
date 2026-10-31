@@ -7,7 +7,8 @@ import httpx
 from pydantic import ValidationError
 
 from counterspeech.config import Settings
-from counterspeech.providers.base import Completion, ProviderError
+from counterspeech.providers.base import Completion, ProviderError, provider_event
+from counterspeech.providers.rate_limit import GroqPacer
 from counterspeech.schemas import StrictModel
 
 
@@ -18,6 +19,7 @@ class OpenAICompatibleProvider:
         if not settings.provider_configured:
             raise ValueError("Live provider is not configured")
         self.settings = settings
+        self.pacer = GroqPacer(settings) if settings.provider_groq_pacing else None
         self.client = httpx.AsyncClient(
             timeout=httpx.Timeout(settings.provider_timeout_seconds),
             transport=transport,
@@ -25,6 +27,19 @@ class OpenAICompatibleProvider:
         )
 
     async def complete(self, stage, system, data, schema: type[StrictModel]):
+        try:
+            async with asyncio.timeout(self.settings.provider_call_deadline_seconds):
+                if self.pacer is None:
+                    return await self._complete(stage, system, data, schema)
+                if self.pacer.lock.locked():
+                    provider_event("provider_wait", reason="request_queue", wait_seconds=None)
+                # Serialize dispatch, response headers and retries across all runs.
+                async with self.pacer.lock:
+                    return await self._complete(stage, system, data, schema)
+        except TimeoutError as exc:
+            raise ProviderError("provider_deadline_exceeded") from exc
+
+    async def _complete(self, stage, system, data, schema: type[StrictModel]):
         schema_json = json.dumps(schema.model_json_schema(), ensure_ascii=False)
         trusted_system = f"{system}\nReturn only a JSON object matching this schema:\n{schema_json}"
         untrusted_data = json.dumps(data, ensure_ascii=False, allow_nan=False)
@@ -41,6 +56,12 @@ class OpenAICompatibleProvider:
         started = time.monotonic()
         attempts = 0
         for attempt in range(self.settings.provider_retries + 1):
+            if self.pacer:
+                # Use UTF-8 bytes as a conservative prompt allowance without
+                # assuming English token density. This may wait more than an exact
+                # tokenizer would. It is never recorded as actual token usage.
+                estimate = len(trusted_system.encode()) + len(untrusted_data.encode())
+                await self.pacer.wait(estimate + body["max_tokens"])
             attempts += 1
             try:
                 response = await self.client.post(
@@ -52,13 +73,26 @@ class OpenAICompatibleProvider:
                 )
             except (httpx.TimeoutException, httpx.TransportError) as exc:
                 if attempt < self.settings.provider_retries:
+                    provider_event("provider_retry", attempt=attempts, reason="transport_error")
                     await asyncio.sleep(min(0.25 * 2**attempt, 2))
                     continue
                 raise ProviderError("provider_unavailable") from exc
+            if self.pacer:
+                self.pacer.observe(response)
             if response.status_code in {408, 429, 500, 502, 503, 504}:
+                provider_event(
+                    "provider_retry"
+                    if attempt < self.settings.provider_retries
+                    else "provider_retry_exhausted",
+                    attempt=attempts,
+                    status_code=response.status_code,
+                    reason="rate_limited"
+                    if response.status_code == 429
+                    else "provider_unavailable",
+                )
                 if attempt < self.settings.provider_retries:
-                    # Never honor unbounded external Retry-After values.
-                    await asyncio.sleep(min(0.25 * 2**attempt, 2))
+                    if not (self.pacer and response.status_code == 429):
+                        await asyncio.sleep(min(0.25 * 2**attempt, 2))
                     continue
                 raise ProviderError(
                     "provider_rate_limited"

@@ -6,7 +6,7 @@ from counterspeech.config import Settings
 from counterspeech.output_script import required_script, validate_output_script
 from counterspeech.policy import SelectionPolicy, rank_candidates, score_candidate
 from counterspeech.prompts import PROMPT_VERSION, system_prompt
-from counterspeech.providers.base import Provider, ProviderError
+from counterspeech.providers.base import Provider, ProviderError, provider_event_sink
 from counterspeech.schemas import (
     Analysis,
     Assessment,
@@ -34,7 +34,12 @@ class Pipeline:
 
     async def _call(self, run_id, stage, data, schema, **links):
         try:
-            response = await self.provider.complete(stage, system_prompt(stage), data, schema)
+            with provider_event_sink(
+                lambda kind, payload: self.store.add_event(
+                    run_id, kind, {"stage": stage, **links, **payload}
+                )
+            ):
+                response = await self.provider.complete(stage, system_prompt(stage), data, schema)
         except ProviderError as exc:
             self.store.add_event(
                 run_id, "stage_failed", {"stage": stage, "code": exc.code, **links}
