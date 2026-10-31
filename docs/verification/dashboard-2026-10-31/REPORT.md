@@ -13,6 +13,7 @@ The Node server attaches `RESEARCH_API_KEY` to the existing FastAPI routes. Brow
 | Check | Observed result | Evidence boundary |
 |---|---|---|
 | `pytest backend/tests -q -o faulthandler_timeout=20` | **67 passed, 1 skipped** | Existing backend tests; PostgreSQL skipped because `TEST_DATABASE_URL` is absent. Provider responses are fixtures/mocked HTTP. One upstream Starlette/HTTPX deprecation warning. |
+| Remote backend CI with PostgreSQL | **68 passed**, no skips | Actual GitHub backend job at `a6f0cc3`; includes the real PostgreSQL test service. Provider responses remain fixtures. |
 | `npm test` | **7 UI/projection tests + 7 HTTP proxy tests passed** | UI fetches / upstream model API are mocked. Real local HTTP sockets exercise the proxy boundary. |
 | `npm run test:e2e` | **9 browser integration tests passed** | Real Chromium, built React app, Node proxy, FastAPI and SQLite. Only LLM responses use the deterministic test-only provider. |
 | `npm run build` | Passed | Strict TypeScript including unused declarations, then Vite production bundle. |
@@ -25,6 +26,8 @@ The Node server attaches `RESEARCH_API_KEY` to the existing FastAPI routes. Brow
 Browser cases cover adverse→refinement→selection, exhausted-budget abstention, a failure after generation/simulation with unprocessed drafts, processing events while running, multi-turn observation recording and a switched Hindi request, exact trace retrieval/reload/export, all five language choices, 390px layout, absence of server secrets from the bundle, single-shot unevaluated baseline, no-simulation and no-history modes. These tests establish UI/orchestration behavior; they do not establish real-model refinement success or language quality.
 
 The environment blocked Playwright's browser download host with HTTP 403. Its already-installed `/usr/bin/chromium` was used through `CHROMIUM_PATH`; no network-policy bypass or TLS weakening was used. Local production-browser checks are actual executions. CI configuration includes the new checks; remote outcomes must be read from GitHub, not inferred from local success.
+
+The first remote CI run passed its backend job and frontend build/unit checks but exposed a clean-checkout setup defect: the browser launcher assumed ignored `work/` already existed, so SQLite could not create its test database. The launcher now creates the directory before starting services. A fresh archived checkout with no pre-existing scratch directory built successfully and passed all **9 browser tests**. Python executable paths are quoted; a path containing spaces also passed a browser smoke test. These executions used Linux/Chromium; Windows PowerShell commands are documented, but a native Windows runtime was not available in this session.
 
 ## Genuine provider integration
 

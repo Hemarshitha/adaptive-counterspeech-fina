@@ -22,6 +22,7 @@ Implemented on the existing feature branch from `0f6eaa03059b341832d417c1a86c3f1
 | Check | Actual result |
 |---|---|
 | Existing backend suite | **67 passed, 1 skipped**; PostgreSQL URL not configured. One upstream Starlette/HTTPX warning. |
+| Remote backend CI with PostgreSQL | **68 passed**, no skips, one upstream warning; actual GitHub job at implementation commit `a6f0cc3`. |
 | Dashboard unit / proxy tests | **7 UI/projection + 7 HTTP proxy tests passed**. UI/upstream responses mocked. |
 | Production browser integration | **9 passed**, real Chromium → Node → FastAPI → SQLite; deterministic **test-only LLM** provider. Covers processing, refinement/selection, abstention, partial failure/unprocessed drafts, multi-turn/history, all modes, exact retrieval and mobile layout. |
 | Build / formatting / dependencies | Strict TypeScript + Vite production build, Prettier, Ruff lint/format, `pip check`, whitespace checks passed. |
@@ -32,6 +33,8 @@ Implemented on the existing feature branch from `0f6eaa03059b341832d417c1a86c3f1
 Real-model runs used Groq `openai/gpt-oss-120b`, two candidates and zero provider retries. Conversation `4c66160d-a93b-4d80-96f3-ff3b05d54bc1`; completed English run `8858a371-4542-47f3-81d7-0477858c762f`; failed Hindi run `e9a7f10a-7446-4523-9bc4-b690c9ff1cba`. These are assistant-authored, researcher-controlled test messages, **not organically observed human comments**. All model predictions/assessments remain uncalibrated and independently unvalidated. Recorded selection is an engineering outcome, not demonstrated human de-escalation.
 
 Full actual traces, inputs, decisions and restart inspection are in [the dashboard verification report](docs/verification/dashboard-2026-10-31/REPORT.md) and its adjacent JSON evidence. Ignored local live database: `work/dashboard-live/research.db`. The checked-in JSON is not automatically replayed or imported by the dashboard. The environment blocked Playwright's download host; browser checks used the already installed `/usr/bin/chromium` without bypassing network policy.
+
+Publication: implementation commit `a6f0cc314d9e361b446314fd37170cc1c27aefa3` was pushed to the feature branch; PR #1 remains open and unmerged and remote main stayed at `7cf44d6254214f77c1c3a093f8c34211ae6ce756`. The first remote CI run passed the backend job and dashboard build/unit checks, but browser startup failed because a clean checkout lacked ignored `work/`. The browser launcher now creates that directory itself; the correction is verified from a fresh archived checkout before publication. Remote final CI outcomes are reported separately from the local test results above.
 
 ### Remaining blockers / next work
 

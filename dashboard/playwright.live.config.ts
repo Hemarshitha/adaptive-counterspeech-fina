@@ -35,7 +35,7 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: `${process.env.PYTHON || "../work/.venv/bin/python"} -m uvicorn counterspeech.api:app_factory --factory --host 127.0.0.1 --port 8012`,
+      command: `"${process.env.PYTHON || "../work/.venv/bin/python"}" -m uvicorn counterspeech.api:app_factory --factory --host 127.0.0.1 --port 8012`,
       url: "http://127.0.0.1:8012/health",
       reuseExistingServer: false,
       env: {

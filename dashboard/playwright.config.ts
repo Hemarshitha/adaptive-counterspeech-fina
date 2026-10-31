@@ -1,6 +1,9 @@
 import { defineConfig } from "@playwright/test";
 import { resolve } from "node:path";
+import { mkdirSync } from "node:fs";
 
+// A clean checkout does not contain ignored scratch/database directories.
+mkdirSync(resolve("../work"), { recursive: true });
 const key = "browser-test-only-access-key-at-least-24-characters";
 export default defineConfig({
   testDir: "./tests",
@@ -19,7 +22,7 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: `${process.env.PYTHON || "../work/.venv/bin/python"} -m uvicorn tests.serve_fixture:app --host 127.0.0.1 --port 8011`,
+      command: `"${process.env.PYTHON || "../work/.venv/bin/python"}" -m uvicorn tests.serve_fixture:app --host 127.0.0.1 --port 8011`,
       url: "http://127.0.0.1:8011/health",
       reuseExistingServer: false,
       env: {
