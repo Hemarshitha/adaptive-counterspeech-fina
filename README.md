@@ -2,7 +2,7 @@
 
 Original B.Tech research implementation governed by [PROJ_2.pdf](docs/PROJ_2.pdf). No previous-semester source, models, generated data or results are used.
 
-**Current increment:** the FastAPI research engine and a responsive React research dashboard connected to its real persisted traces. The YouTube extension and human study remain future milestones. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and [dashboard verification evidence](docs/verification/dashboard-2026-10-31/REPORT.md) for actual results, including a real selected English response and a rate-limited Hindi follow-up. These are controlled test inputs, not a human efficacy study.
+**Current increment:** Milestone 6 adds a YouTube-first Chrome/Edge MV3 extension to the existing FastAPI engine and React research dashboard, with explicit local pairing, reviewed DOM/manual input, multilingual controls, real run IDs and human edit/copy. The human study remains future work. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and [dashboard verification evidence](docs/verification/dashboard-2026-10-31/REPORT.md) for actual results, including a real selected English response and a rate-limited Hindi follow-up. These are controlled test inputs, not a human efficacy study.
 
 The engine generates strategy-specific candidates, simulates each candidate's possible reaction, separately assesses safety/quality, applies explicit ranking/gates, and either refines within a bound, recommends a response, or abstains. Each stage is stored. Simulations are **uncalibrated model estimates**, not observed behavior. Recommendations never become real conversation turns unless a human explicitly records an actually posted reply.
 
@@ -84,13 +84,28 @@ Local startup uses SQLite and creates development tables. For migrations instead
 
 For the dashboard, copy `dashboard/.env.example` to `dashboard/.env`, set the matching server-side research token, then `cd dashboard && npm ci && npm run build && npm start` in a second terminal.
 
+## YouTube extension — Windows Chrome/Edge
+
+Follow the complete [Windows extension installation and pairing guide](extension/README.md#windows-chrome-installation-and-startup). Keep the backend and dashboard startup commands above; both use the existing database/API contracts. From the repository root:
+
+```powershell
+node extension\build.mjs
+.\work\.venv\Scripts\python.exe extension\package.py
+```
+
+Open **chrome://extensions**, enable **Developer Mode**, click **Load unpacked**, and select **`extension\dist\unpacked`** (the folder containing `manifest.json`). Pin Counterpoint. In `dashboard/.env`, set `DASHBOARD_EXTENSION_ID=igplhknffgcbdgeobbppamkgnbjppkoi` (verify against the installed extension's actual ID). Start/restart the dashboard; its terminal prints a single-use five-minute pairing code. Click the extension toolbar icon on a YouTube video and pair with **http://127.0.0.1:5173** using that code. Edge uses **edge://extensions** and the same steps.
+
+Capture highlighted comment text, pick a visible comment, or paste manually. Review/edit the comment and any earlier context, select language/script and consent, then submit once. Only explicitly checked/role-confirmed earlier messages are sent; loaded replies may be incomplete or later than the selected comment. The real backend chooses a recommendation or abstains/fails. The panel shows actual model reaction/assessment scores and opens the exact `/runs/<run_id>` in the dashboard. Edit/copy for **manual posting only**. To continue, reuse its conversation ID; record actually posted replies explicitly in the dashboard. On timeout, recover the stored run before resubmitting.
+
+The extension stores only an expiring, scoped session credential/recovery IDs in `chrome.storage.session`; research/provider secrets stay server-side. Pairing uses a separate route boundary and never relaxes the dashboard's general origin validation or backend CORS. See the guide for exact permission/data limits, security design, troubleshooting and verification commands. Automated inference is fixture-based; previous genuine Groq evidence is only read. See [extension verification](docs/verification/extension-2026-10-31/REPORT.md) for installed-extension versus browser-harness evidence and remaining manual checks.
+
 ## Research dashboard workflow
 
 - Enter the actual comment, choose English, Hindi, Malayalam, Hinglish or Minglish (or automatic detection), optionally require native/romanized script, and submit. Candidate count and bounded refinement are sent to the existing API. Experiment settings also expose full, no-history, no-simulation and single-shot modes without changing their contracts.
 - The dashboard discovers the active run through its conversation and polls the stored trace while the existing synchronous POST is processing. It displays recorded events, not an estimated completion percentage. Avoid repeating a submission after a dropped connection; first inspect persisted runs.
 - Inspect the input, IDs, context actually supplied, detected language, hostility/change, every candidate and its simulated future reply, uncalibrated reaction distribution, separate model quality assessment, score, recorded eligibility reasons, thresholds and ranking. Refinement appears only when actually logged. Abstention has no selected response. A failed trace preserves partial evidence without inventing assessment or scoring.
 - **Conversation** displays researcher-submitted observations separately from simulated future replies, with model-assessed hostility by input. Use an existing conversation for a next run, or enter its UUID in settings. Record an actually posted reply through the explicit observation form; the generated recommendation is never automatically inserted. Submitted provenance does not independently prove human origin. Controlled research messages must be described honestly in study evidence.
-- Browse the latest 30/100 persisted runs, or open any known run ID. Stable links are `http://127.0.0.1:5173/runs/<run_id>`; `/?run_id=<run_id>` also works. The future extension can link directly to the same backend UUID. Download exports the exact retrieved JSON.
+- Browse the latest 30/100 persisted runs, or open any known run ID. Stable links are `http://127.0.0.1:5173/runs/<run_id>`; `/?run_id=<run_id>` also works. The extension links directly to the same backend UUID. Download exports the exact retrieved JSON.
 - **Execution log** exposes structured events and genuinely reported per-call metadata. Unknown usage/cost stays unavailable; partial token totals are labeled and failed calls may have unreported usage. No hidden model reasoning, calibrated probability, actual future human behavior or independent human quality score is claimed.
 
 An empty database shows an empty library. Checked-in verification JSON is research evidence and is **not** automatically imported, seeded, replayed as live output, or used as frontend mock data. Earlier local SQLite files are not included in Git; point the backend at your existing database to browse it.
@@ -179,4 +194,4 @@ Managed proxy builds can use `docker build --secret id=proxy_ca,src=/etc/ssl/cer
 
 ## Continue
 
-Read `AGENTS.md`, `PROJECT_SPEC.md`, `PROJECT_STATUS.md` and the proposal before changes. Next: integrate the YouTube-first MV3 extension using stable run links, address the existing Hinglish script-validation limitation, and collect independent multilingual/human evaluation. Provider capacity currently blocks the second new live test. Never present fixture output as live inference. Preserve the original documents and work on the feature branch; keep PR #1 open and unmerged.
+Read `AGENTS.md`, `PROJECT_SPEC.md`, `PROJECT_STATUS.md` and the proposal before changes. Next: manually smoke-check the extension toolbar/YouTube adapter on Windows Chrome/Edge, address the existing Hinglish script-validation limitation, and collect independent multilingual/human evaluation. Provider capacity currently blocks the second new live test. Never present fixture output as live inference. Preserve the original documents and work on the feature branch; keep PR #1 open and unmerged.

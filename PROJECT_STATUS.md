@@ -1,3 +1,21 @@
+# Project status — Milestone 6: YouTube browser extension
+
+Updated: **31 October 2026**. Branch: `feat/greenfield-research-engine`. Started from the explicitly requested **`49233244b547262485d2682c407f9aa330fafd25`** after fetching/checking it out; main is unchanged and PR #1 stays open/unmerged.
+
+Implemented MV3 light side panel, selected/picked loaded YouTube comment/context preview, manual fallback, all five language/script controls, explicit data review, real existing FastAPI requests, stable run/conversation IDs, observed-history continuation, actual recommendation/abstention/failure, prediction/score display, editing/copying and exact dashboard links. Never posts automatically. Context is minimized, unchecked until reviewed, and requires explicit earlier-observation role confirmation. No whole-page or author/URL collection.
+
+The dashboard's loopback server adds an **opt-in explicit pairing bridge**: exact extension ID, single-use five-minute code, 30-minute scoped session in Chrome session storage, revocation and no general run listing. Research/provider credentials stay server-side. Normal dashboard origins/Host/write protections and backend authentication/CORS/contracts remain unchanged. Backend code/prompts/policy/migrations, original documents and earlier multilingual/dashboard evidence are preserved.
+
+Local checks: **67 backend passed / 1 optional PostgreSQL skipped**, **7 dashboard UI tests**, **17 proxy/pairing HTTP tests**, **4 extension client/read-only trace tests**, **9 existing dashboard browser tests**, and **13 extension UI/service browser tests passed**. Build/lint/format/dependency/preservation checks passed and extension package built. New model outputs are deterministic test fixtures; no new live model calls were made. The same actual fixture run is compared across extension UI, direct FastAPI GET and dashboard trace. Genuine earlier Groq JSON is read only, without re-import or new inference.
+
+**Browser evidence boundary:** managed local Chromium blocks all new extensions; its actual installed-extension attempt failed and policies were preserved. Local 13-case extension browser coverage explicitly emulates Chrome APIs/origin transport while using genuine Chromium and real Node/FastAPI/SQLite. Default CI instead installs the actual MV3 package with native APIs; remote results are recorded after observation. Live YouTube/native Windows toolbar/side-panel behavior still needs manual verification. Prior Hinglish script failure, native-speaker evaluation, live quota/refinement and human-study limitations remain.
+
+See [Windows installation/pairing guide](extension/README.md), [verification report](docs/verification/extension-2026-10-31/REPORT.md), fixture trace and labeled screenshot there. Build from the root with `node extension/build.mjs`; package with `python extension/package.py`; install `extension/dist/unpacked` via chrome://extensions → Developer Mode → Load unpacked (Edge: edge://extensions). Start the existing backend/dashboard per README; configure the exact extension ID in dashboard/.env and enter its terminal's single-use code in the panel. Recover stored runs before retrying timeouts.
+
+Next: observe installed-extension CI, manually verify Windows Chrome/Edge + current YouTube, and perform a controlled real-provider demo only when quota is established. Continue independent evaluation and the existing language-gate work. The records below are preserved historical milestone evidence and describe their original time, not the latest extension state.
+
+---
+
 # Project status — internal research dashboard milestone
 
 Updated: **31 October 2026**. Branch: `feat/greenfield-research-engine`.

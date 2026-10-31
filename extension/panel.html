@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counterpoint · YouTube</title>
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body>
+    <header>
+      <div class="mark">C<span>·</span></div>
+      <div>
+        <strong>Counterpoint</strong
+        ><small>Thoughtful replies. Human decisions.</small>
+      </div>
+      <a href="panel.html" target="_blank" title="Open in a full tab">↗</a>
+    </header>
+    <main>
+      <div class="intro">
+        <span class="eyebrow">YOUTUBE COUNTERSPEECH</span>
+        <h1>A little context.<br />A considered response.</h1>
+        <p>Review a comment, explore a response, and decide what to say.</p>
+      </div>
+      <details id="connection" open class="card">
+        <summary>
+          Local research connection
+          <span id="connection-state">Not paired</span>
+        </summary>
+        <p class="help">
+          Pair with your own running dashboard. Your comment is sent to its
+          backend and configured model provider only when you submit.
+        </p>
+        <label for="service">Dashboard address</label
+        ><input
+          id="service"
+          type="url"
+          value="http://127.0.0.1:5173"
+          required
+        />
+        <label for="code">Single-use pairing code</label
+        ><input
+          id="code"
+          type="password"
+          autocomplete="off"
+          placeholder="From the dashboard terminal"
+        />
+        <div class="actions">
+          <button id="pair">Pair local service</button
+          ><button id="disconnect" class="quiet" hidden>Disconnect</button>
+        </div>
+        <small id="extension-id"></small><small id="expiry"></small>
+      </details>
+      <div id="notice" role="status" aria-live="polite"></div>
+      <div id="error" role="alert" hidden></div>
+      <section class="card" aria-labelledby="input-heading">
+        <div class="section-top">
+          <span class="step">1</span>
+          <h2 id="input-heading">Bring the conversation</h2>
+        </div>
+        <p class="help">
+          Highlight a YouTube comment, then capture it. Or pick a comment on the
+          video. You can always paste below.
+        </p>
+        <div class="actions">
+          <button class="secondary" id="capture">Capture selection</button
+          ><button class="secondary" id="pick">Pick a comment</button>
+        </div>
+        <label for="comment">Comment to respond to</label
+        ><textarea
+          id="comment"
+          rows="5"
+          maxlength="8000"
+          dir="auto"
+          placeholder="Paste or capture the comment here…"
+        ></textarea>
+        <div class="input-meta">
+          <span id="source">Manual entry</span
+          ><span id="characters">0 / 8,000</span>
+        </div>
+        <details id="context-details">
+          <summary>
+            Earlier observed context <span id="context-count">0 messages</span>
+          </summary>
+          <p class="help">
+            Only checked messages are sent. Include only messages you know came
+            before this comment, and choose their observed role. Loaded replies
+            may be later or by other people; authorship and chronology are not
+            inferred. For an existing conversation, context comes from its
+            stored history.
+          </p>
+          <div id="context-list"></div>
+          <button class="quiet" id="add-context">+ Add earlier message</button>
+        </details>
+        <div class="columns">
+          <div>
+            <label for="language">Response language</label
+            ><select id="language">
+              <option value="">Auto detect</option>
+              <option value="english">English</option>
+              <option value="hindi">हिन्दी · Hindi</option>
+              <option value="malayalam">മലയാളം · Malayalam</option>
+              <option value="hinglish">Hinglish</option>
+              <option value="minglish">Minglish</option>
+            </select>
+          </div>
+          <div>
+            <label for="script">Required script</label
+            ><select id="script">
+              <option value="auto">Auto</option>
+              <option value="native">Native script</option>
+              <option value="romanized">Romanized</option>
+            </select>
+          </div>
+        </div>
+        <details>
+          <summary>Conversation &amp; refinement</summary>
+          <label for="conversation">Existing conversation ID (optional)</label
+          ><input
+            id="conversation"
+            placeholder="Paste an exact conversation UUID"
+            autocomplete="off"
+          />
+          <p class="help">
+            Attach a known conversation to continue its observed history. Start
+            a new thread for an unrelated comment.
+          </p>
+          <label for="refinements">Refinement limit</label
+          ><select id="refinements">
+            <option value="0">0 · lower provider usage</option>
+            <option value="1">1 · allow adaptive refinement</option>
+          </select>
+          <p class="help">
+            Full pipeline · 2 candidates. Each submission makes several model
+            calls. Do not retry rate-limited runs.
+          </p>
+          <button class="quiet" id="new-thread">Start a new thread</button>
+        </details>
+        <label class="check"
+          ><input id="consent" type="checkbox" /> I reviewed the comment and
+          selected context, and agree to send them to my local backend and its
+          model provider.</label
+        >
+        <button id="submit" class="primary" disabled>
+          Generate counterspeech <span>→</span></button
+        ><button id="recover" class="quiet" hidden>Recover stored run</button>
+      </section>
+      <section id="result" class="card" hidden aria-labelledby="result-heading">
+        <div class="section-top">
+          <span class="step">2</span>
+          <h2 id="result-heading">Your recommendation</h2>
+        </div>
+        <span id="outcome" class="badge"></span>
+        <p id="result-note"></p>
+        <textarea
+          id="recommendation"
+          aria-label="Editable recommendation"
+          rows="5"
+          dir="auto"
+          hidden
+        ></textarea
+        ><button id="copy" class="secondary" hidden>
+          Copy for manual posting
+        </button>
+        <p id="edit-note" class="help" hidden>
+          Edited text has not been re-scored. Predictions below refer to the
+          original recommendation. Copying does not post or record a message.
+        </p>
+        <div id="prediction" hidden>
+          <h3>Model-predicted reaction</h3>
+          <p class="help">
+            Uncalibrated model estimates · not an observed reply
+          </p>
+          <strong id="reaction"></strong>
+          <div id="scores"></div>
+          <blockquote id="simulated" dir="auto"></blockquote>
+          <p id="uncertainty" class="help"></p>
+        </div>
+        <div id="candidate-evidence"></div>
+        <details>
+          <summary>Exact run &amp; observed history</summary>
+          <div id="ids"></div>
+          <h3>Submitted observations</h3>
+          <div id="history"></div>
+          <p class="help">
+            Observed text is researcher/user submitted, not independently
+            verified human behavior. Simulated replies and unposted
+            recommendations are excluded.
+          </p>
+        </details>
+        <a
+          id="dashboard-link"
+          class="trace-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          >View exact run in research dashboard ↗</a
+        >
+      </section>
+      <footer>
+        Review. Edit. Copy. Post manually.<br />Counterpoint never posts YouTube
+        comments.
+      </footer>
+    </main>
+    <script type="module" src="panel.js"></script>
+  </body>
+</html>

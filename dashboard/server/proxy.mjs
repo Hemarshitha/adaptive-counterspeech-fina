@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
+import { createExtensionBridge } from "./extension.mjs";
 
 const uuid =
   "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
@@ -20,6 +21,8 @@ export function createHandler({
   dist,
   development,
   fetchImpl = fetch,
+  extensionId,
+  extensionOptions = {},
 }) {
   const backend = new URL(backendUrl);
   if (
@@ -41,6 +44,14 @@ export function createHandler({
     `[::1]:${port}`,
   ]);
   const origins = new Set([...hosts].map((host) => `http://${host}`));
+  const extension = createExtensionBridge({
+    extensionId,
+    backend,
+    apiKey,
+    fetchImpl,
+    timeoutMs,
+    ...extensionOptions,
+  });
   return async (req, res) => {
     res.setHeader("Cache-Control", "no-store");
     res.setHeader("X-Content-Type-Options", "nosniff");
@@ -49,14 +60,21 @@ export function createHandler({
       "Content-Security-Policy",
       `default-src 'self'; script-src 'self'${development ? " 'unsafe-inline'" : ""}; style-src 'self' 'unsafe-inline'; connect-src 'self'${development ? " ws://localhost:* ws://127.0.0.1:*" : ""}; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'`,
     );
-    if (
-      !hosts.has(req.headers.host) ||
-      (req.headers.origin && !origins.has(req.headers.origin)) ||
-      req.headers["sec-fetch-site"] === "cross-site"
-    ) {
+    if (!hosts.has(req.headers.host)) {
       return json(res, 403, { detail: { code: "dashboard_origin_rejected" } });
     }
     const url = new URL(req.url, `http://${req.headers.host}`);
+    if (url.pathname.startsWith("/extension/")) {
+      if (extensionId) return extension(req, res, url);
+      return json(res, 403, {
+        detail: { code: "extension_pairing_not_enabled" },
+      });
+    }
+    if (
+      (req.headers.origin && !origins.has(req.headers.origin)) ||
+      req.headers["sec-fetch-site"] === "cross-site"
+    )
+      return json(res, 403, { detail: { code: "dashboard_origin_rejected" } });
     if (url.pathname.startsWith("/api/")) {
       const path = url.pathname.slice(4);
       const allowed =

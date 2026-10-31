@@ -13,7 +13,11 @@
     "start": "node server/index.mjs --production",
     "test": "vitest run && node --test server/*.test.mjs",
     "test:e2e": "playwright test",
-    "test:live": "playwright test --config playwright.live.config.ts"
+    "test:live": "playwright test --config playwright.live.config.ts",
+    "extension:build": "node ../extension/build.mjs",
+    "extension:test": "node --test ../extension/tests/*.test.mjs",
+    "test:extension": "playwright test --config playwright.extension.config.ts",
+    "extension:format": "prettier --check ../extension/*.{js,mjs,json,html,css} ../extension/tests/*.{ts,mjs}"
   },
   "dependencies": {
     "dotenv": "^17.2.3",

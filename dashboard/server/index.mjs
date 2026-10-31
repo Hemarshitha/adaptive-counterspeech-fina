@@ -41,6 +41,7 @@ if (!production) {
 const handler = createHandler({
   backendUrl: process.env.DASHBOARD_BACKEND_URL || "http://127.0.0.1:8000",
   apiKey: process.env.RESEARCH_API_KEY,
+  extensionId: process.env.DASHBOARD_EXTENSION_ID,
   port,
   timeoutMs,
   dist: resolve(root, "dist"),

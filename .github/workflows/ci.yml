@@ -62,3 +62,16 @@ jobs:
         working-directory: dashboard
       - run: npm run test:e2e
         working-directory: dashboard
+      - run: npm run extension:build
+        working-directory: dashboard
+      - run: npm run extension:format
+        working-directory: dashboard
+      - run: npm run extension:test
+        working-directory: dashboard
+      - run: npm run test:extension
+        working-directory: dashboard
+      - run: python extension/package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: counterpoint-extension
+          path: extension/dist/counterpoint-extension.zip
