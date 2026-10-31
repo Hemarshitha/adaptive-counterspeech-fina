@@ -1,0 +1,1 @@
+{"experiment_id":"single-shot-v1","mode":"single_shot","candidate_count":3,"max_refinements":0,"prompt_version":"greenfield-1.0","policy_version":null,"seed":null,"note":"Pipeline uses exactly one candidate/call; candidate_count is ignored in this mode.","independent_metrics":[],"human_ratings_collected":false}
