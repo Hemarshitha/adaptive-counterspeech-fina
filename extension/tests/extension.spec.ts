@@ -377,6 +377,87 @@ for (const [language, text, script] of [
 
 const youtubeFixture = `<!doctype html><meta charset="utf-8"><style>ytd-comment-thread-renderer,ytd-comment-view-model,ytd-comment-renderer{display:block;padding:12px}</style><p>UNRELATED PAGE TEXT SHOULD NEVER BE CAPTURED</p><ytd-comment-thread-renderer><ytd-comment-view-model><div id="content-text">TEST Parent · earlier visible comment</div></ytd-comment-view-model><div id="replies"><ytd-comment-view-model><div id="content-text">TEST Selected · हिन्दी മലയാളം comment</div></ytd-comment-view-model><ytd-comment-renderer><div id="content-text">TEST Another loaded reply</div></ytd-comment-renderer><ytd-comment-renderer style="display:none"><div id="content-text">HIDDEN REPLY</div></ytd-comment-renderer></div></ytd-comment-thread-renderer>`;
 
+// These stubs test the real panel handlers; they do not verify Chrome's prompt.
+for (const button of ["Capture selection", "Pick a comment"]) {
+  test(`${button} requests access on click, handles denial, then captures`, async () => {
+    await panel.evaluate(() => {
+      const api = (globalThis as any).chrome;
+      (globalThis as any).captureCalls = [];
+      let grant = false;
+      api.permissions ||= {};
+      api.permissions.request = (options: any) => {
+        (globalThis as any).captureCalls.push({
+          step: "request",
+          options,
+          active: navigator.userActivation.isActive,
+        });
+        const allowed = grant;
+        grant = true;
+        return Promise.resolve(allowed);
+      };
+      api.tabs.query = async () => {
+        (globalThis as any).captureCalls.push({ step: "query" });
+        return [{ id: 42, url: "https://www.youtube.com/watch?v=fixture" }];
+      };
+      api.scripting ||= {};
+      api.scripting.executeScript = async (options: any) => {
+        (globalThis as any).captureCalls.push({
+          step: "inject",
+          pick: options.args[0],
+        });
+        return [
+          {
+            result: {
+              text: "TEST permission flow comment",
+              context: [],
+              note: "Review fixture capture",
+            },
+          },
+        ];
+      };
+    });
+    await panel
+      .getByLabel("Comment to respond to")
+      .fill("Keep my manual input");
+    await panel.getByLabel("I reviewed the comment").check();
+    await panel.getByRole("button", { name: button, exact: true }).click();
+    await expect(panel.getByRole("alert")).toContainText(
+      "YouTube access was not granted",
+    );
+    await expect(panel.getByLabel("Comment to respond to")).toHaveValue(
+      "Keep my manual input",
+    );
+    await expect(panel.getByLabel("I reviewed the comment")).toBeChecked();
+    expect(
+      await panel.evaluate(() =>
+        (globalThis as any).captureCalls.map((c: any) => c.step),
+      ),
+    ).toEqual(["request"]);
+    await panel.getByRole("button", { name: button, exact: true }).click();
+    await expect(panel.getByLabel("Comment to respond to")).toHaveValue(
+      "TEST permission flow comment",
+    );
+    await expect(panel.getByRole("alert")).toBeHidden();
+    await expect(panel.getByLabel("I reviewed the comment")).not.toBeChecked();
+    const calls = await panel.evaluate(() => (globalThis as any).captureCalls);
+    expect(calls.map((c: any) => c.step)).toEqual([
+      "request",
+      "request",
+      "query",
+      "inject",
+    ]);
+    expect(calls[0].active).toBe(true);
+    expect(calls[0].options).toEqual({
+      origins: [
+        "https://www.youtube.com/*",
+        "https://m.youtube.com/*",
+        "https://youtube.com/*",
+      ],
+    });
+    expect(calls[3].pick).toBe(button === "Pick a comment");
+  });
+}
+
 test("real Chromium extracts only the selected comment and loaded thread context from authored YouTube DOM", async () => {
   const youtube = await context.newPage();
   await youtube.route("https://www.youtube.com/**", (r) =>
@@ -403,12 +484,48 @@ test("real Chromium extracts only the selected comment and loaded thread context
   ]);
   expect(JSON.stringify(captured)).not.toContain("UNRELATED");
   expect(JSON.stringify(captured)).not.toContain("HIDDEN");
+  await youtube.evaluate(() => getSelection()!.collapseToStart());
+  expect((await youtube.evaluate(captureYouTube, false)).error).toContain(
+    "Highlight text",
+  );
+  // A partial highlight inside nested markup still captures the full comment.
+  await youtube
+    .locator("#content-text")
+    .nth(1)
+    .evaluate((el) => {
+      el.innerHTML = "<span>TEST Selected</span> · हिन्दी മലയാളം comment";
+      const range = document.createRange();
+      range.setStart(el.firstChild!.firstChild!, 5);
+      range.setEnd(el.firstChild!.firstChild!, 10);
+      getSelection()!.removeAllRanges();
+      getSelection()!.addRange(range);
+    });
+  expect((await youtube.evaluate(captureYouTube, false)).text).toBe(
+    captured.text,
+  );
   const picking = youtube.evaluate(captureYouTube, true);
   await youtube
     .getByText("Counterpoint: click a comment", { exact: false })
     .waitFor();
   await youtube.locator("#content-text").nth(1).click();
   expect((await picking).text).toBe(captured.text);
+  const cancelling = youtube.evaluate(captureYouTube, true);
+  await youtube
+    .getByText("Counterpoint: click a comment", { exact: false })
+    .waitFor();
+  await youtube.keyboard.press("Escape");
+  expect((await cancelling).error).toContain("cancelled or timed out");
+  // Missing content after a DOM change must offer manual entry.
+  await youtube
+    .locator("#content-text")
+    .nth(1)
+    .evaluate((el) => el.removeAttribute("id"));
+  const inaccessible = youtube.evaluate(captureYouTube, true);
+  await youtube
+    .getByText("Counterpoint: click a comment", { exact: false })
+    .waitFor();
+  await youtube.getByText("TEST Selected", { exact: true }).click();
+  expect((await inaccessible).error).toContain("inaccessible");
   await panel.bringToFront();
   await submit(captured.text);
   await expect(panel.getByLabel("Editable recommendation")).toBeVisible();

@@ -5,6 +5,11 @@
   "minimum_chrome_version": "116",
   "description": "Review a YouTube comment, request counterspeech from your paired local research service, and edit/copy for manual posting.",
   "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
+  "optional_host_permissions": [
+    "https://www.youtube.com/*",
+    "https://m.youtube.com/*",
+    "https://youtube.com/*"
+  ],
   "host_permissions": ["http://127.0.0.1/*"],
   "background": {
     "service_worker": "background.js",

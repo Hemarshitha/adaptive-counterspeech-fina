@@ -1,3 +1,23 @@
+# YouTube capture permission fix — 1 November 2026
+
+Branch: `fix/youtube-capture-permissions`, based on exactly `b92547cfc0f3cf1b81f4452ed891da4732619da7` from `fix/groq-rate-limit-pacing`.
+
+Diagnosis: the manifest had only loopback host permission and depended on temporary `activeTab` for YouTube injection. Opening/using a side panel does not itself reliably grant `activeTab`; a side-panel capture click cannot substitute for that grant. Without a matching host grant Chrome rejects `scripting.executeScript`, and protected tab URLs may be absent without broad `tabs` permission. The previous error merely advised reopening the toolbar instead of acquiring permission.
+
+Fix: optional HTTPS host permissions for only `www.youtube.com`, `m.youtube.com` and `youtube.com`; both capture clicks invoke `permissions.request` synchronously before the first asynchronous tab lookup. Denial/request failure stops capture with visible retry/manual-entry guidance. After granting, validate the active tab's host before injection, handle missing tabs/results and revoked access, and prevent overlapping captures. Empty/collapsed selections receive explicit guidance; partial highlighted text inside one comment still captures its full loaded text. Existing picker, visible loaded context limits, manual entry, explicit submission consent, manifest public key/extension ID, loopback pairing and trusted session storage are preserved. No backend/dashboard runtime, Groq settings, research policy, database or saved run was changed. Tests use disposable fixture databases only and make no live provider requests.
+
+Verification (Node 24.19.0, Python 3.12, system Chromium):
+
+- `npm run extension:test` from `dashboard`: **10 passed**, including permission-before-query ordering for both modes, first denial, repeated granted access, request errors, unavailable/wrong tabs, navigation/revocation, missing results, parser failures and exact extension ID preservation.
+- `EXTENSION_BROWSER_MODE=web_harness CHROMIUM_PATH=/usr/bin/chromium npm run test:extension`: **16 passed**. Real Chromium/UI/Node/FastAPI/disposable SQLite, emulated Chrome APIs/origin, authored YouTube HTML and deterministic provider fixtures. Covers both real panel capture handlers, active user gesture, denial then successful capture, highlighted nested text, click picking, Esc cancellation, missing DOM content and the existing complete integration/security/script workflows.
+- Final targeted rerun after strengthening the denial test to retain manual text and consent: both capture-handler browser tests passed (**2 passed**).
+- `npm test` from `dashboard`: **7 UI/projection + 22 HTTP/server/security tests passed**. `npm run build`, `npm run extension:build`, `npm run extension:format` and `git diff --check` passed.
+- Native installed-extension suite was attempted but the system Chromium did not produce an extension service worker; its first four setup attempts timed out and the run was stopped. Playwright's browser download was blocked by the environment's network policy. The explicit existing web-harness fallback above passed; it is not a native installation or host-permission-dialog verification. One earlier harness attempt raced a rebuild of its unpacked directory; a clean rerun passed all 16 tests.
+
+Manual Windows Chrome validation is still required for the actual optional permission dialog and live YouTube capture. Exact in-place rebuild/reload, denied-permission retry, highlight/click-pick and manual-fallback steps are in `extension/README.md`. Keep the existing installed folder and public key; do not uninstall or replace configured local files.
+
+---
+
 # Project status — opt-in Groq rate-limit pacing
 
 Updated: **1 November 2026**. Work branch: `fix/groq-rate-limit-pacing`, based on exactly `3cb7b3d60d3fbfb3628961da8b01f13634f8b09a` from `feat/greenfield-research-engine`. No merge into main, database reset/migration, local credential-file replacement, extension modification, prompt/threshold/scoring change or new evaluation result.

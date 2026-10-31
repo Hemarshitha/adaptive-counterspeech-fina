@@ -1,4 +1,4 @@
-import { captureYouTube } from "./capture.js";
+import { captureFromTab } from "./capture.js";
 import {
   request,
   serviceOrigin,
@@ -122,26 +122,16 @@ function contextUI() {
   $("add-context").disabled = contexts.length >= 4;
 }
 async function capture(pick) {
+  if (busy) return;
+  busy = true;
+  controls();
   notice(
     pick
       ? "Click a comment on the YouTube page. Esc cancels."
       : "Reading your selected comment…",
   );
   try {
-    const [tab] = await chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    });
-    if (!tab?.id)
-      throw new Error("No accessible tab. Paste a comment manually.");
-    const [response] = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: captureYouTube,
-      args: [pick],
-    });
-    const data = response?.result;
-    if (!data || data.error)
-      throw new Error(data?.error || "Comment unavailable. Paste it manually.");
+    const data = await captureFromTab(pick);
     $("comment").value = data.text;
     contexts = data.context;
     contextUI();
@@ -151,14 +141,9 @@ async function capture(pick) {
     notice(data.note);
   } catch (err) {
     notice("");
-    if (
-      err.message.includes("Cannot access") ||
-      err.message.includes("Missing host")
-    )
-      throw new Error(
-        "Browser access unavailable. Click the extension toolbar icon while on the YouTube video, then capture again, or paste manually.",
-      );
     throw err;
+  } finally {
+    busy = false;
   }
 }
 function showHistory(conversation) {

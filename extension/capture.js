@@ -1,3 +1,73 @@
+// Request synchronously from the capture click, before any await can lose the
+// user gesture. Side-panel clicks do not grant activeTab. Host access also lets
+// tabs.query expose the YouTube URL without the broad tabs permission.
+export async function captureFromTab(pick = false) {
+  let granted;
+  try {
+    granted = await chrome.permissions.request({
+      origins: [
+        "https://www.youtube.com/*",
+        "https://m.youtube.com/*",
+        "https://youtube.com/*",
+      ],
+    });
+  } catch {
+    throw new Error(
+      "YouTube access could not be requested. Reload the extension and reopen the panel, or paste manually.",
+    );
+  }
+  if (!granted)
+    throw new Error(
+      "YouTube access was not granted. Click capture again and allow YouTube access, or paste manually.",
+    );
+  try {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    if (!tab?.id)
+      throw new Error(
+        "No active tab available. Open a YouTube video and capture again, or paste manually.",
+      );
+    let url;
+    try {
+      url = new URL(tab.url);
+    } catch {
+      throw new Error(
+        "Tab URL unavailable. Activate a YouTube video and capture again, or paste manually.",
+      );
+    }
+    if (
+      url.protocol !== "https:" ||
+      !["www.youtube.com", "m.youtube.com", "youtube.com"].includes(
+        url.hostname,
+      )
+    )
+      throw new Error(
+        "Open a YouTube video and capture again, or paste manually.",
+      );
+    const [response] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: captureYouTube,
+      args: [pick],
+    });
+    const data = response?.result;
+    if (!data || data.error)
+      throw new Error(data?.error || "Comment unavailable. Paste it manually.");
+    return data;
+  } catch (err) {
+    if (/Cannot access|Missing host|permission/i.test(err.message))
+      throw new Error(
+        "Chrome blocked YouTube access. Click capture again and allow access; check the extension's Site access settings, or paste manually.",
+      );
+    if (/No tab with id|tab was closed|frame.*removed/i.test(err.message))
+      throw new Error(
+        "The YouTube tab closed or navigated during capture. Open the video and capture again, or paste manually.",
+      );
+    throw err;
+  }
+}
+
 // Self-contained for chrome.scripting.executeScript: runs only after a user action.
 export async function captureYouTube(pick = false) {
   if (
@@ -59,6 +129,11 @@ export async function captureYouTube(pick = false) {
     });
   } else {
     const selection = window.getSelection();
+    if (!selection || selection.isCollapsed || !selection.toString().trim())
+      return {
+        error:
+          "Highlight text inside a YouTube comment, use Pick a comment, or paste manually.",
+      };
     const node = selection?.anchorNode;
     const element =
       node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
